@@ -1,5 +1,9 @@
 # モルク
 
+## UI設計
+figma
+https://www.figma.com/file/r882IZ0EDyNOmAsc9xah5A/%E3%83%A2%E3%83%AB%E3%82%AFUI%E8%A8%AD%E8%A8%88?type=design&node-id=5-2&mode=design&t=7jTxUseyYZ86HPTQ-0
+
 ## DB設計
 ```mermaid
 erDiagram
