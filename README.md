@@ -25,10 +25,12 @@ users {
 
 practices {
   bigint id
+  varchar(100) title
   varchar(500) description
   integer max_participants
   integer prefecture_id
   integer organizer_id
+  date event_date
   datetime created_at
 }
 
