@@ -17,7 +17,7 @@ users ||--o{ like: "1:n"
 
 users {
   bigint id
-  varchar(255) nickname
+  varchar(20) nickname
   VARCHAR(255) icon_url
   VARCHAR(255) email
   VARCHAR(50) cognito_username
