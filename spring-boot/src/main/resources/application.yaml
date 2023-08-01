@@ -1,0 +1,24 @@
+#######################################################################
+# Spring Boot Built-in
+#######################################################################
+server:
+    port: 8080
+    servlet:
+        context-path: /api/v1
+
+#######################################################################
+# Spring Datasource Setting
+#######################################################################
+spring:
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        url: ${DATASOURCE_URL:jdbc:mysql://localhost:3306/moruku}
+        username: ${DATASOURCE_USER:dev_user}
+        password: ${DATASOURCE_PASSWORD:dev_user_pass}
+
+#######################################################################
+# MyBatis Setting
+#######################################################################
+mybatis:
+    configuration:
+        map-underscore-to-camel-case: true
