@@ -33,9 +33,9 @@ users ||--o{ like: "1:n"
 users {
   bigint id
   varchar(40) nickname
-  VARCHAR(255) icon_url
+  VARCHAR(2048) icon_url
   VARCHAR(255) email
-  VARCHAR(50) cognito_username
+  VARCHAR(100) firebase_uid
 }
 
 practices {
