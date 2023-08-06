@@ -3,6 +3,9 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithPopup,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   GoogleAuthProvider,
 } from "firebase/auth";
@@ -10,10 +13,15 @@ import { computed, ref } from "vue";
 
 export const useAuth = (auth: Auth = getAuth()) => {
   const user = ref<User | null>(auth.currentUser);
-  const isAuthed = computed(() => !!user.value); // 古いブラウザに対応するための二重否定
+  const isAuthed = computed(() => !!user.value && user.value.emailVerified); // 古いブラウザに対応するための二重否定
 
   // idTokenが変化したら更新する
   auth.onIdTokenChanged((authUser) => (user.value = authUser));
+
+  // userの情報を更新
+  const reloadCurrentUser = async () => {
+    await user.value?.reload();
+  };
 
   // 認証状態チェック
   const checkAuthState = async () => {
@@ -47,9 +55,35 @@ export const useAuth = (auth: Auth = getAuth()) => {
     }
   };
 
+  // メールアドレスでサインアップ
+  const signUpWithEmail = async (email: string, password: string) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+
+      // TODO: DBに、ニックネーム・メールアドレス、firebase authのuidを登録
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // メールアドレス確認メールを送信
+  const verifyEmail = async () => {
+    try {
+      if (user.value) {
+        await sendEmailVerification(user.value);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // メールアドレスでサインイン
-  const signInWithEmail = async () => {
-    
+  const signInWithEmail = async (email: string, password: string) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      throw error;
+    }
   };
 
   // サインアウト
@@ -64,10 +98,14 @@ export const useAuth = (auth: Auth = getAuth()) => {
 
   return { 
     user, 
-    isAuthed, 
+    isAuthed,
+    reloadCurrentUser,
     checkAuthState, 
-    signUpWithGoogle, 
-    signInWithGoogle, 
+    signUpWithGoogle,
+    signInWithGoogle,
+    signUpWithEmail,
+    verifyEmail,
+    signInWithEmail,
     signOut 
   };
 };

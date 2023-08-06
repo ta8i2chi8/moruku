@@ -55,7 +55,7 @@
     </v-row>
     <v-row no-gutters justify="center">
       <v-col cols="6">
-        <v-text-field placeholder="moruku@example.com" density="compact"></v-text-field>
+        <v-text-field v-model="inputEmail" placeholder="moruku@example.com" density="compact"></v-text-field>
       </v-col>
     </v-row>
 
@@ -66,7 +66,7 @@
     </v-row>
     <v-row no-gutters justify="center">
       <v-col cols="6">
-        <v-text-field type="password" density="compact"></v-text-field>
+        <v-text-field v-model="inputPassword" type="password" density="compact"></v-text-field>
       </v-col>
     </v-row>
 
@@ -99,7 +99,10 @@ definePageMeta({
   middleware: ['auth-signin']
 });
 
-const { signInWithGoogle } = useAuth();
+const inputEmail = ref('');
+const inputPassword = ref('');
+
+const { signInWithGoogle, signInWithEmail } = useAuth();
 
 const onClickSignInWithGoogle = async () => {
   await signInWithGoogle();
@@ -109,7 +112,7 @@ const onClickSignInWithGoogle = async () => {
 };
 
 const onClickSignInWithEmail = async () => {
-  // TODO: メールでログイン
+  await signInWithEmail(inputEmail.value, inputPassword.value);
 
   const to = useRoute().redirectedFrom?.fullPath || '/'
   await navigateTo(to, { redirectCode: 302 });

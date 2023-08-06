@@ -60,7 +60,7 @@
     </v-row>
     <v-row no-gutters justify="center">
       <v-col cols="6">
-        <v-text-field placeholder="moruku@example.com" density="compact"></v-text-field>
+        <v-text-field v-model="inputEmail" placeholder="moruku@example.com" density="compact"></v-text-field>
       </v-col>
     </v-row>
 
@@ -71,7 +71,7 @@
     </v-row>
     <v-row no-gutters justify="center">
       <v-col cols="6">
-        <v-text-field type="password" density="compact"></v-text-field>
+        <v-text-field v-model="inputPassword" type="password" density="compact"></v-text-field>
       </v-col>
     </v-row>
 
@@ -94,7 +94,10 @@
 import { mdiGoogle } from '@mdi/js';
 import { mdiEmail } from '@mdi/js';
 
-const { signUpWithGoogle } = useAuth();
+const inputEmail = ref('');
+const inputPassword = ref('');
+
+const { signUpWithGoogle, signUpWithEmail, verifyEmail } = useAuth();
 
 const onClickSignUpWithGoogle = async () => {
   await signUpWithGoogle();
@@ -104,8 +107,9 @@ const onClickSignUpWithGoogle = async () => {
 };
 
 const onClickSignUpWithEmail = async () => {
-  // TODO: メールを送信
-  await navigateTo('/signup/confirm')
+  await signUpWithEmail(inputEmail.value, inputPassword.value);
+  await verifyEmail();
+  await navigateTo('/signup/confirm');
 };
 </script>
 
