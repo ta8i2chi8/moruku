@@ -4,7 +4,7 @@ import vuetify from 'vite-plugin-vuetify';
 export default defineNuxtConfig({
   app: {
     head: {
-      title: 'moruku',
+      title: 'モルク',
       meta: [{ name: 'description', content: 'A platform that connects Molkky athletes' }],
       link: [{ rel: 'icon', href: '/icon.jpg' }],
     },
@@ -26,4 +26,15 @@ export default defineNuxtConfig({
     },
   },
   css: ['@/assets/main.scss'],
+  runtimeConfig: {
+    public: {
+      FB_API_KEY: "",
+      FB_AUTH_DOMAIN: "",
+      FB_PROJECT_ID: "",
+      FB_STORAGE_BUCKET: "",
+      FB_MESSAGING_SENDER_ID: "",
+      FB_APP_ID: "",
+      FB_MEASUREMENT_ID: "",
+    },
+  },
 });

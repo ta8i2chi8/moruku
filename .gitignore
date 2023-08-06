@@ -76,6 +76,12 @@ Temporary Items
 # End of https://www.toptal.com/developers/gitignore/api/macos
 
 ### This project ###
+# docker config
 docker/db/data
 docker/db/conf.d
 docker/db/log
+
+# Local env files
+.env
+.env.*
+!.env.example
