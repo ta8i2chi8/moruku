@@ -25,7 +25,7 @@
           class="btn"
           color="blue"
           :prepend-icon="mdiGoogle"
-          @click=""
+          @click="onClickSignInWithGoogle"
         >
           ログイン
         </v-btn>
@@ -76,7 +76,7 @@
           class="btn" 
           color="red"
           :prepend-icon="mdiEmail"
-          @click=""
+          @click="onClickSignInWithEmail"
         >
           ログイン
         </v-btn>
@@ -94,6 +94,26 @@
 <script setup lang="ts">
 import { mdiGoogle } from '@mdi/js';
 import { mdiEmail } from '@mdi/js';
+
+definePageMeta({
+  middleware: ['auth-signin']
+});
+
+const { signInWithGoogle } = useAuth();
+
+const onClickSignInWithGoogle = async () => {
+  await signInWithGoogle();
+
+  const to = useRoute().redirectedFrom?.fullPath || '/'
+  await navigateTo(to, { redirectCode: 302 });
+};
+
+const onClickSignInWithEmail = async () => {
+  // TODO: メールでログイン
+
+  const to = useRoute().redirectedFrom?.fullPath || '/'
+  await navigateTo(to, { redirectCode: 302 });
+};
 </script>
 
 <style scoped>

@@ -19,7 +19,7 @@
           class="btn"
           color="blue"
           :prepend-icon="mdiGoogle"
-          @click="signInWithGoogle"
+          @click="onClickSignUpWithGoogle"
         >
           新規登録
         </v-btn>
@@ -81,7 +81,7 @@
           class="btn" 
           color="red"
           :prepend-icon="mdiEmail"
-          @click="signInWithEmail"
+          @click="onClickSignUpWithEmail"
         >
           新規登録
         </v-btn>
@@ -94,16 +94,18 @@
 import { mdiGoogle } from '@mdi/js';
 import { mdiEmail } from '@mdi/js';
 
-const router = useRouter();
+const { signUpWithGoogle } = useAuth();
 
-const signInWithGoogle = () => {
-  // TODO: Googleで会員登録処理
-  console.log("googleで会員登録");
+const onClickSignUpWithGoogle = async () => {
+  await signUpWithGoogle();
+
+  const to = useRoute().redirectedFrom?.fullPath || '/'
+  await navigateTo(to, { redirectCode: 302 });
 };
 
-const signInWithEmail = () => {
+const onClickSignUpWithEmail = async () => {
   // TODO: メールを送信
-  router.push('/signup/confirm');
+  await navigateTo('/signup/confirm')
 };
 </script>
 

@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev-local": "nuxt dev --dotenv .env.local",
+    "dev-production": "nuxt dev --dotenv .env.production",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -16,5 +17,8 @@
     "sass": "^1.64.1",
     "vite-plugin-vuetify": "^1.0.2",
     "vuetify": "^3.3.10"
+  },
+  "dependencies": {
+    "firebase": "^10.1.0"
   }
 }
