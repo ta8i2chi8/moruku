@@ -4,6 +4,7 @@ import {
   onAuthStateChanged,
   signInWithPopup,
   createUserWithEmailAndPassword,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   GoogleAuthProvider,
@@ -12,10 +13,15 @@ import { computed, ref } from "vue";
 
 export const useAuth = (auth: Auth = getAuth()) => {
   const user = ref<User | null>(auth.currentUser);
-  const isAuthed = computed(() => !!user.value); // 古いブラウザに対応するための二重否定
+  const isAuthed = computed(() => !!user.value && user.value.emailVerified); // 古いブラウザに対応するための二重否定
 
   // idTokenが変化したら更新する
   auth.onIdTokenChanged((authUser) => (user.value = authUser));
+
+  // userの情報を更新
+  const reloadCurrentUser = async () => {
+    await user.value?.reload();
+  };
 
   // 認証状態チェック
   const checkAuthState = async () => {
@@ -60,6 +66,17 @@ export const useAuth = (auth: Auth = getAuth()) => {
     }
   };
 
+  // メールアドレス確認メールを送信
+  const verifyEmail = async () => {
+    try {
+      if (user.value) {
+        await sendEmailVerification(user.value);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // メールアドレスでサインイン
   const signInWithEmail = async (email: string, password: string) => {
     try {
@@ -81,11 +98,13 @@ export const useAuth = (auth: Auth = getAuth()) => {
 
   return { 
     user, 
-    isAuthed, 
+    isAuthed,
+    reloadCurrentUser,
     checkAuthState, 
     signUpWithGoogle,
     signInWithGoogle,
     signUpWithEmail,
+    verifyEmail,
     signInWithEmail,
     signOut 
   };

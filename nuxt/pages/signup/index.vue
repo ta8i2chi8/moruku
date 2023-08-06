@@ -97,7 +97,7 @@ import { mdiEmail } from '@mdi/js';
 const inputEmail = ref('');
 const inputPassword = ref('');
 
-const { signUpWithGoogle, signUpWithEmail } = useAuth();
+const { signUpWithGoogle, signUpWithEmail, verifyEmail } = useAuth();
 
 const onClickSignUpWithGoogle = async () => {
   await signUpWithGoogle();
@@ -107,9 +107,9 @@ const onClickSignUpWithGoogle = async () => {
 };
 
 const onClickSignUpWithEmail = async () => {
-  // TODO: メールを送信
   await signUpWithEmail(inputEmail.value, inputPassword.value);
-  await navigateTo('/signup/confirm')
+  await verifyEmail();
+  await navigateTo('/signup/confirm');
 };
 </script>
 
