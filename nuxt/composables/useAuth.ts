@@ -3,6 +3,8 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   GoogleAuthProvider,
 } from "firebase/auth";
@@ -47,9 +49,24 @@ export const useAuth = (auth: Auth = getAuth()) => {
     }
   };
 
+  // メールアドレスでサインアップ
+  const signUpWithEmail = async (email: string, password: string) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+
+      // TODO: DBに、ニックネーム・メールアドレス、firebase authのuidを登録
+    } catch (error) {
+      throw error;
+    }
+  };
+
   // メールアドレスでサインイン
-  const signInWithEmail = async () => {
-    
+  const signInWithEmail = async (email: string, password: string) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      throw error;
+    }
   };
 
   // サインアウト
@@ -66,8 +83,10 @@ export const useAuth = (auth: Auth = getAuth()) => {
     user, 
     isAuthed, 
     checkAuthState, 
-    signUpWithGoogle, 
-    signInWithGoogle, 
+    signUpWithGoogle,
+    signInWithGoogle,
+    signUpWithEmail,
+    signInWithEmail,
     signOut 
   };
 };
