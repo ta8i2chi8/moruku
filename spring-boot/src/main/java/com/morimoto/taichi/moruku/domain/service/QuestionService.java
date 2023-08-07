@@ -1,8 +1,8 @@
-package com.morimoto.taichi.moruku.service;
+package com.morimoto.taichi.moruku.domain.service;
 
+import com.morimoto.taichi.moruku.domain.entity.Question;
+import com.morimoto.taichi.moruku.domain.repository.QuestionMapper;
 import com.morimoto.taichi.moruku.exception.NoSuchIdException;
-import com.morimoto.taichi.moruku.persistence.entity.Question;
-import com.morimoto.taichi.moruku.persistence.mapper.QuestionMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

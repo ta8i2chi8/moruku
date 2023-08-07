@@ -1,6 +1,4 @@
-package com.morimoto.taichi.moruku.persistence.mapper;
-
-import com.morimoto.taichi.moruku.persistence.entity.Question;
+package com.morimoto.taichi.moruku.domain.repository;
 
 import java.util.List;
 
@@ -10,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+
+import com.morimoto.taichi.moruku.domain.entity.Question;
 
 @Mapper
 public interface QuestionMapper {

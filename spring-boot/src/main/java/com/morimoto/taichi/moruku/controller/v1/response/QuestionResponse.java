@@ -1,4 +1,4 @@
-package com.morimoto.taichi.moruku.web.response;
+package com.morimoto.taichi.moruku.controller.v1.response;
 
 import java.time.LocalDateTime;
 
@@ -13,10 +13,9 @@ import lombok.*;
 @Getter
 // Builderクラスを自動的に生成
 @Builder
-public class QuestionDetailResponse {
+public class QuestionResponse {
     private Integer id;
     private String content;
-    private String imageContent;
     private Integer attentionCount;
     @JsonFormat(pattern="yyyy/MM/dd HH:mm")
     private LocalDateTime createdAt;

@@ -1,22 +1,25 @@
-package com.morimoto.taichi.moruku.web.response;
+package com.morimoto.taichi.moruku.domain.entity;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 // lombok:アノテーションを追加すると自動的にソースコードを生成してくれる
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+// パラメータのないデフォルトコンストラクタを自動的に生成
+@NoArgsConstructor
 // 全てのフィールドを引数に持つコンストラクタを生成
 @AllArgsConstructor
-// フィールドのGetterを自動的に生成
-@Getter
+// @Getter,@Setter,@ToString,@EqualsAndHashCodeをまとめて使用
+@Data
 // Builderクラスを自動的に生成
 @Builder
-public class QuestionResponse {
+public class Question {
     private Integer id;
     private String content;
+    private String imageContent;
     private Integer attentionCount;
-    @JsonFormat(pattern="yyyy/MM/dd HH:mm")
     private LocalDateTime createdAt;
 }

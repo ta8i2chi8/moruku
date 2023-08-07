@@ -1,4 +1,4 @@
-package com.morimoto.taichi.moruku.web.response;
+package com.morimoto.taichi.moruku.controller.v1.response;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;

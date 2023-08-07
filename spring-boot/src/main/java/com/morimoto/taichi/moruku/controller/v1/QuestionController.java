@@ -1,11 +1,11 @@
-package com.morimoto.taichi.moruku.web.controller;
+package com.morimoto.taichi.moruku.controller.v1;
 
+import com.morimoto.taichi.moruku.domain.entity.Question;
+import com.morimoto.taichi.moruku.domain.service.QuestionService;
 import com.morimoto.taichi.moruku.exception.NoSuchIdException;
-import com.morimoto.taichi.moruku.persistence.entity.Question;
-import com.morimoto.taichi.moruku.service.QuestionService;
-import com.morimoto.taichi.moruku.web.request.QuestionRequest;
-import com.morimoto.taichi.moruku.web.response.QuestionDetailResponse;
-import com.morimoto.taichi.moruku.web.response.QuestionResponse;
+import com.morimoto.taichi.moruku.controller.v1.request.QuestionRequest;
+import com.morimoto.taichi.moruku.controller.v1.response.QuestionDetailResponse;
+import com.morimoto.taichi.moruku.controller.v1.response.QuestionResponse;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("/questions")
+@RequestMapping("/v1/questions")
 public class QuestionController {
 
     @Autowired
