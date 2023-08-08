@@ -49,7 +49,7 @@
     </v-row>
     <v-row no-gutters justify="center">
       <v-col cols="6">
-        <v-text-field maxlength="40" density="compact"></v-text-field>
+        <v-text-field v-model="inputNickname" maxlength="40" density="compact"></v-text-field>
       </v-col>
     </v-row>
 
@@ -94,6 +94,7 @@
 import { mdiGoogle } from '@mdi/js';
 import { mdiEmail } from '@mdi/js';
 
+const inputNickname = ref('');
 const inputEmail = ref('');
 const inputPassword = ref('');
 
@@ -107,7 +108,7 @@ const onClickSignUpWithGoogle = async () => {
 };
 
 const onClickSignUpWithEmail = async () => {
-  await signUpWithEmail(inputEmail.value, inputPassword.value);
+  await signUpWithEmail(inputNickname.value, inputEmail.value, inputPassword.value);
   await verifyEmail();
   await navigateTo('/signup/confirm');
 };

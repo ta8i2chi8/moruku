@@ -14,6 +14,7 @@
   * NUXT_PUBLIC_FB_MESSAGING_SENDER_ID
   * NUXT_PUBLIC_FB_APP_ID
   * NUXT_PUBLIC_FB_MEASUREMENT_ID
+  * NUXT_PUBLIC_BASE_URL
 
 ## UI設計
 figma
@@ -31,7 +32,7 @@ molkky_activities ||--o{ like: "1:n"
 users ||--o{ like: "1:n"
 
 users {
-  bigint id
+  binary(16) id
   varchar(40) nickname
   VARCHAR(2048) icon_url
   VARCHAR(255) email
