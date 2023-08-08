@@ -1,37 +1,52 @@
 package com.morimoto.taichi.moruku.controller.v1;
 
-import java.net.URI;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.morimoto.taichi.moruku.domain.entity.Question;
-import com.morimoto.taichi.moruku.domain.service.QuestionService;
-import com.morimoto.taichi.moruku.controller.v1.request.QuestionRequest;
+import com.morimoto.taichi.moruku.controller.v1.request.UserRequest;
+import com.morimoto.taichi.moruku.controller.v1.response.UserResponse;
+import com.morimoto.taichi.moruku.domain.entity.User;
+import com.morimoto.taichi.moruku.domain.service.UserService;
+import com.morimoto.taichi.moruku.exception.NoSuchIdException;
+
 
 @RestController
 @RequestMapping("/v1/users")
 public class UserController {
 
     @Autowired
-    private QuestionService questionService;
+    private UserService userService;
+
+    // TODO: getMeも作る
+    @GetMapping("/{uuid}")
+    public UserResponse findById(@PathVariable String uuid) throws NoSuchIdException {
+        User user = userService.findById(UUID.fromString(uuid));
+        return UserResponse.builder()
+                .uuid(user.getUuid().toString())
+                .nickname(user.getNickname())
+                .iconUrl(user.getIconUrl())
+                .email(user.getEmail())
+                .firebaseUid(user.getFirebaseUid())
+                .build();
+    }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody @Validated QuestionRequest questionRequest) {
-        Question newQuestion = new Question();
-        newQuestion.setContent(questionRequest.getContent());
-        newQuestion.setImageContent(questionRequest.getImageContent());
-        questionService.insert(newQuestion);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .pathSegment(newQuestion.getId().toString())
-                .build().encode().toUri();
-        return ResponseEntity.created(location).build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public void insert(@RequestBody @Validated UserRequest userRequest) {
+        User newUser = new User();
+        newUser.setNickname(userRequest.getNickname());
+        newUser.setEmail(userRequest.getEmail());
+        newUser.setFirebaseUid(userRequest.getFirebaseUid());
+        userService.insert(newUser);
     }
 }
