@@ -1,4 +1,4 @@
-package com.morimoto.taichi.moruku.web.request;
+package com.morimoto.taichi.moruku.controller.v1.request;
 
 import jakarta.validation.constraints.NotNull;
 

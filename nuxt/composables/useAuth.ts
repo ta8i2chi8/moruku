@@ -39,7 +39,15 @@ export const useAuth = (auth: Auth = getAuth()) => {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
 
-      // TODO: DBに、googleの名前・メールアドレス、firebase authのuidを登録
+      // DBに、googleの名前・メールアドレス、firebase authのuidを登録
+      await useFetchMorukuPrivateApi('/users', {
+        method: 'POST',
+        body: {
+          nickname: user.value?.displayName || '',
+          email: user.value?.email || '',
+          firebaseUid: user.value?.uid || '',
+        },
+      });
     } catch (error) {
       throw error;
     }
@@ -56,11 +64,19 @@ export const useAuth = (auth: Auth = getAuth()) => {
   };
 
   // メールアドレスでサインアップ
-  const signUpWithEmail = async (email: string, password: string) => {
+  const signUpWithEmail = async (nickname: string, email: string, password: string) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
 
-      // TODO: DBに、ニックネーム・メールアドレス、firebase authのuidを登録
+      // DBに、ニックネーム・メールアドレス、firebase authのuidを登録
+      await useFetchMorukuPrivateApi('/users', {
+        method: 'POST',
+        body: {
+          nickname: nickname,
+          email: email,
+          firebaseUid: user.value?.uid || '',
+        },
+      });
     } catch (error) {
       throw error;
     }

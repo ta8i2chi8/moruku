@@ -1,11 +1,12 @@
 package com.morimoto.taichi.moruku.exception;
 
-import com.morimoto.taichi.moruku.web.response.ErrorResponse;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.morimoto.taichi.moruku.controller.v1.response.ErrorResponse;
 
 import org.slf4j.Logger;
 
