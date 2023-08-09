@@ -29,11 +29,13 @@ users ||--o{ practices: "1:n"
 prefectures ||--o{ practices: "1:n"
 users ||--o{ molkky_activities: "1:n"
 prefectures ||--o{ molkky_activities: "1:n"
+practices ||--o{ participate: "1:n"
+users ||--o{ participate: "1:n"
 molkky_activities ||--o{ like: "1:n"
 users ||--o{ like: "1:n"
 
 users {
-  binary(16) id
+  binary(16) uuid
   varchar(40) nickname
   VARCHAR(2048) icon_url
   VARCHAR(255) email
@@ -41,7 +43,7 @@ users {
 }
 
 practices {
-  bigint id
+  binary(16) uuid
   varchar(100) title
   varchar(500) description
   integer max_participants
@@ -52,16 +54,21 @@ practices {
 }
 
 molkky_activities {
-  bigint id
+  binary(16) uuid
   varchar(500) content
   integer poster_id
   integer prefecture_id
   datetime created_at
 }
 
+participate {
+  binary(16) practice_id
+  binary(16) user_id
+}
+
 like {
-  bigint molkky_activity_id
-  bigint user_id
+  binary(16) molkky_activity_id
+  binary(16) user_id
 }
 
 prefectures {
