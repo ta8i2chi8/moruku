@@ -19,10 +19,15 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
-	implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+  implementation("org.springframework.boot:spring-boot-starter-security")
+  implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+
+	implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2")
   implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-mysql")
+	implementation("com.google.firebase:firebase-admin:9.2.0")
+
 	compileOnly("org.projectlombok:lombok:1.18.28")
   annotationProcessor("org.projectlombok:lombok:1.18.28")
   runtimeOnly("mysql:mysql-connector-java:8.0.33")

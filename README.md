@@ -1,6 +1,6 @@
 # モルク
 ## 環境構築手順
-1. .envを作成
+1. envファイルを作成
 * .env.local（場所：docker > db 配下）
   * MYSQL_DATABASE
   * MYSQL_ROOT_PASSWORD
@@ -15,6 +15,7 @@
   * NUXT_PUBLIC_FB_APP_ID
   * NUXT_PUBLIC_FB_MEASUREMENT_ID
   * NUXT_PUBLIC_BASE_URL
+2. firebaseサービスアカウントの秘密鍵をダウンロードし、ファイル名を「serviceAccountKey.json」にして、spring-boot > src > main > resources 配下に配置
 
 ## UI設計
 figma

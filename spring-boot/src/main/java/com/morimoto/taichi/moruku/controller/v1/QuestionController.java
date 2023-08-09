@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("/v1/questions")
+@RequestMapping("/api/v1/questions")
 public class QuestionController {
 
     @Autowired

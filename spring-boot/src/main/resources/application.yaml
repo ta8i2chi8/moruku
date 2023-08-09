@@ -3,8 +3,6 @@
 #######################################################################
 server:
     port: 8080
-    servlet:
-        context-path: /api
 
 #######################################################################
 # Spring Datasource Setting
@@ -15,6 +13,12 @@ spring:
         url: ${DATASOURCE_URL:jdbc:mysql://localhost:3306/moruku}
         username: ${DATASOURCE_USER:dev_user}
         password: ${DATASOURCE_PASSWORD:dev_user_pass}
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    issuer-uri: https://securetoken.google.com/moruku-dev   			   
+                    jwk-set-uri: https://www.googleapis.com/robot/v1/metadata/jwk/securetoken@system.gserviceaccount.com
 
 #######################################################################
 # MyBatis Setting
