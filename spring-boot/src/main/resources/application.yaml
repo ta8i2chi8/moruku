@@ -17,8 +17,11 @@ spring:
         oauth2:
             resourceserver:
                 jwt:
-                    issuer-uri: https://securetoken.google.com/moruku-dev   			   
-                    jwk-set-uri: https://www.googleapis.com/robot/v1/metadata/jwk/securetoken@system.gserviceaccount.com
+                    issuer-uri: "https://securetoken.google.com/moruku-dev"
+                    jwk-set-uri: "https://www.googleapis.com/robot/v1/metadata/jwk/securetoken@system.gserviceaccount.com"
+    jackson:
+        date-format: "yyyy-MM-dd'T'HH:mm:ssXXX"
+        time-zone: "Asia/Tokyo"
 
 #######################################################################
 # MyBatis Setting

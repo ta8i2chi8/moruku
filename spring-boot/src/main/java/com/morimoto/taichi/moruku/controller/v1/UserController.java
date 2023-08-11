@@ -27,10 +27,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // TODO: getMeも作る
     @GetMapping("/{uuid}")
     public UserResponse findById(@PathVariable String uuid) throws NoSuchIdException {
         User user = userService.findById(UUID.fromString(uuid));
+        return UserResponse.builder()
+                .uuid(user.getUuid().toString())
+                .nickname(user.getNickname())
+                .iconUrl(user.getIconUrl())
+                .email(user.getEmail())
+                .firebaseUid(user.getFirebaseUid())
+                .build();
+    }
+
+    @GetMapping("/me")
+    public UserResponse findMe() throws NoSuchIdException {
+        User user = userService.findMe();
         return UserResponse.builder()
                 .uuid(user.getUuid().toString())
                 .nickname(user.getNickname())

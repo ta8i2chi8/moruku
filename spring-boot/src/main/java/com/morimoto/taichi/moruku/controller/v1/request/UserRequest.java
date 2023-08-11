@@ -1,5 +1,6 @@
 package com.morimoto.taichi.moruku.controller.v1.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class UserRequest {
@@ -8,6 +9,7 @@ public class UserRequest {
     private String nickname;
 
     @NotBlank
+    @Email
     private String email;
 
     @NotBlank
