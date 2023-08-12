@@ -9,7 +9,7 @@ public class ErrorResponse {
 
     @JsonCreator
     public ErrorResponse(Integer status, String code, String summary, String detail, String messages){
-        this.error = new ErrorContextResponse(status, code, summary, detail,messages);
+        this.error = new ErrorContextResponse(status, code, summary, detail, messages);
     }
 
 }

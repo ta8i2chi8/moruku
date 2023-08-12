@@ -47,32 +47,33 @@ practices {
   varchar(100) title
   varchar(500) description
   integer max_participants
-  integer prefecture_id
-  integer organizer_id
-  date event_date
+  tinyint(3) prefecture_id
+  binary(16) organizer_id
+  date held_at
   datetime created_at
 }
 
 molkky_activities {
   binary(16) uuid
   varchar(500) content
-  integer poster_id
-  integer prefecture_id
+  binary(16) poster_id
+  tinyint(3) prefecture_id
   datetime created_at
 }
 
-participate {
+participations {
   binary(16) practice_id
-  binary(16) user_id
+  VARCHAR(100) user_firebase_uid
 }
 
-like {
+likes {
   binary(16) molkky_activity_id
-  binary(16) user_id
+  VARCHAR(100) user_firebase_uid
 }
 
 prefectures {
-  tinyint id
+  tinyint(3) id
   varchar(255) name
+  varchar(255) name_kana
 }
 ```
