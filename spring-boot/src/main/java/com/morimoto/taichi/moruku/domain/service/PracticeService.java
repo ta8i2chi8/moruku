@@ -8,8 +8,10 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.morimoto.taichi.moruku.common.config.SecurityConfig;
 import com.morimoto.taichi.moruku.domain.entity.Practice;
 import com.morimoto.taichi.moruku.domain.entity.User;
+import com.morimoto.taichi.moruku.domain.repository.ParticipantionMapper;
 import com.morimoto.taichi.moruku.domain.repository.PracticeMapper;
 import com.morimoto.taichi.moruku.domain.repository.UserMapper;
 import com.morimoto.taichi.moruku.exception.NoSuchIdException;
@@ -19,6 +21,12 @@ public class PracticeService {
 
     @Autowired
     private PracticeMapper practiceMapper;
+
+    @Autowired
+    private ParticipantionMapper participantionMapper;
+
+    @Autowired
+    private SecurityConfig securityConfig;
 
     @Autowired
     private UserMapper userMapper;
@@ -74,6 +82,45 @@ public class PracticeService {
         // uuidの存在チェック
         if (deletedCount == 0) {
             throw new NoSuchIdException("practices tableにuuid " + uuid + "が存在していません");
+        }
+    }
+
+    public void joinPractice(UUID practiceId) throws NoSuchIdException {
+        // practiceIdの存在チェック
+        Practice practice = practiceMapper.findById(practiceId);        
+        if (Objects.isNull(practice)) {
+            throw new NoSuchIdException("practices tableにuuid " + practiceId + "が存在していません");
+        }
+        
+        String firebaseUid = securityConfig.getFirebaseUid();
+
+        // firebaseUidの存在チェック
+        User user = userMapper.findByFirebaseUid(firebaseUid);        
+        if (Objects.isNull(user)) {
+            throw new NoSuchIdException("users tableにfirebase_uid " + firebaseUid + "が存在していません");
+        }
+
+        participantionMapper.insert(practiceId, firebaseUid);
+    }
+
+    public void cancelPractice(UUID practiceId) throws NoSuchIdException {
+        // practiceIdの存在チェック
+        Practice practice = practiceMapper.findById(practiceId);        
+        if (Objects.isNull(practice)) {
+            throw new NoSuchIdException("practices tableにuuid " + practiceId + "が存在していません");
+        }
+        
+        String firebaseUid = securityConfig.getFirebaseUid();
+
+        // firebaseUidの存在チェック
+        User user = userMapper.findByFirebaseUid(firebaseUid);        
+        if (Objects.isNull(user)) {
+            throw new NoSuchIdException("users tableにfirebase_uid " + firebaseUid + "が存在していません");
+        }
+
+        int deletedCount = participantionMapper.delete(practiceId, firebaseUid);
+        if (deletedCount == 0) {
+            throw new NoSuchIdException("participations tableにpractice_id: " + practiceId.toString() + ", user_firebase_uid: " + firebaseUid + "のレコードが存在しません");
         }
     }
 }

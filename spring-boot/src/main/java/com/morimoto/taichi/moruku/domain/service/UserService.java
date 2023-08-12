@@ -31,8 +31,6 @@ public class UserService {
 
     public User findMe() throws NoSuchIdException {
         String firebaseUid = securityConfig.getFirebaseUid();
-        System.out.println("firebaseUid:" + firebaseUid);
-
         User user = userMapper.findByFirebaseUid(firebaseUid);
 
         if (Objects.isNull(user)) {

@@ -79,7 +79,7 @@ public class PracticeController {
 
         practiceService.insert(newPractice);
     }
-
+    
     @PutMapping("/{uuid}")
     public void update(@PathVariable String uuid, @RequestBody @Validated PracticeRequest practiceRequest) throws NoSuchIdException {
         Practice newPractice = new Practice();
@@ -90,12 +90,23 @@ public class PracticeController {
         newPractice.setPrefectureId(practiceRequest.getPrefectureId());
         newPractice.setOrganizerId(UUID.fromString(practiceRequest.getOrganizerId()));
         newPractice.setHeldOn(practiceRequest.getHeldOn());
-
+        
         practiceService.update(newPractice);
     }
-
+    
     @DeleteMapping("/{uuid}")
     public void delete(@PathVariable String uuid) throws NoSuchIdException {
         practiceService.delete(UUID.fromString(uuid));
+    }
+
+    @PostMapping("/{uuid}/join")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void joinPractice(@PathVariable String uuid) throws NoSuchIdException {
+        practiceService.joinPractice(UUID.fromString(uuid));
+    }
+    
+    @DeleteMapping("/{uuid}/join")
+    public void cancelPractice(@PathVariable String uuid) throws NoSuchIdException {
+        practiceService.cancelPractice(UUID.fromString(uuid));
     }
 }

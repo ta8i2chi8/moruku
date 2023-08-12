@@ -42,7 +42,6 @@ public class SecurityConfig {
       public Jwt decode (String token)  throws JwtException { 
         Jwt  jwt  = jwtDecoder.decode(token); 
         firebaseUid = (String) jwt.getClaims().get("user_id");
-        System.out.println( "firebaseUid: " + firebaseUid);
         return jwt;
       } 
     }; 

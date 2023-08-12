@@ -63,12 +63,12 @@ molkky_activities {
 
 participations {
   binary(16) practice_id
-  binary(16) user_id
+  VARCHAR(100) user_firebase_uid
 }
 
 likes {
   binary(16) molkky_activity_id
-  binary(16) user_id
+  VARCHAR(100) user_firebase_uid
 }
 
 prefectures {

@@ -62,4 +62,23 @@ public interface PracticeMapper {
             uuid = #{uuid}
     """)
     int delete(UUID uuid);
+
+    @Insert("""
+        INSERT INTO 
+            participations (practice_id, user_id) 
+        VALUES 
+            (#{practiceId}, #{userId})
+    """)
+    void applyParticipate(UUID practiceId, UUID userId);
+    
+    @Delete("""
+        DELETE FROM 
+            participations 
+        WHERE 
+            practice_id = #{practiceId}
+                AND
+            user_id = #{userId}
+
+    """)
+    int cancelParticipate(UUID practiceId, UUID userId);
 }
