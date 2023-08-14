@@ -10,8 +10,11 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { computed, ref } from "vue";
+import { UserRepositoryImpl } from '@/domain/repositories/user-repository';
 
 export const useAuth = (auth: Auth = getAuth()) => {
+  const userRepository = new UserRepositoryImpl();
+
   const user = ref<User | null>(auth.currentUser);
   const isAuthed = computed(() => !!user.value && user.value.emailVerified); // 古いブラウザに対応するための二重否定
 
@@ -40,13 +43,10 @@ export const useAuth = (auth: Auth = getAuth()) => {
       await signInWithPopup(auth, provider);
 
       // DBに、googleの名前・メールアドレス、firebase authのuidを登録
-      await useFetchMorukuPrivateApi('/users', {
-        method: 'POST',
-        body: {
-          nickname: user.value?.displayName || '',
-          email: user.value?.email || '',
-          firebaseUid: user.value?.uid || '',
-        },
+      await userRepository.insertUser({
+        nickname: user.value?.displayName || '',
+        email: user.value?.email || '',
+        firebaseUid: user.value?.uid || '',
       });
     } catch (error) {
       throw error;
@@ -69,13 +69,10 @@ export const useAuth = (auth: Auth = getAuth()) => {
       await createUserWithEmailAndPassword(auth, email, password);
 
       // DBに、ニックネーム・メールアドレス、firebase authのuidを登録
-      await useFetchMorukuPrivateApi('/users', {
-        method: 'POST',
-        body: {
-          nickname: nickname,
-          email: email,
-          firebaseUid: user.value?.uid || '',
-        },
+      await userRepository.insertUser({
+        nickname: nickname,
+        email: email,
+        firebaseUid: user.value?.uid || '',
       });
     } catch (error) {
       throw error;

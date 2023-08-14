@@ -29,10 +29,10 @@ users ||--o{ practices: "1:n"
 prefectures ||--o{ practices: "1:n"
 users ||--o{ molkky_activities: "1:n"
 prefectures ||--o{ molkky_activities: "1:n"
-practices ||--o{ participate: "1:n"
-users ||--o{ participate: "1:n"
-molkky_activities ||--o{ like: "1:n"
-users ||--o{ like: "1:n"
+practices ||--o{ participations: "1:n"
+users ||--o{ participations: "1:n"
+molkky_activities ||--o{ likes: "1:n"
+users ||--o{ likes: "1:n"
 
 users {
   binary(16) uuid

@@ -30,3 +30,12 @@ mybatis:
     configuration:
         map-underscore-to-camel-case: true
     type-handlers-package: com.morimoto.taichi.moruku.domain.repository.typehandler
+
+#######################################################################
+# log Setting
+#######################################################################
+logging:
+    level:
+        org:
+            springframework:
+                security: DEBUG

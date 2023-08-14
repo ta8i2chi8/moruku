@@ -5,11 +5,7 @@ export const useFetchMorukuPrivateApi = async (request: any, opts?: UseFetchOpti
   const config = useRuntimeConfig();
 
   const { user } = useAuth();
-  if (!user.value) {
-    await navigateTo('/signin');
-    return;
-  }
-  const token = await user.value.getIdToken();
+  const token = await user.value!.getIdToken();
 
   return await useFetch(request, { 
     baseURL: config.public.BASE_URL, 

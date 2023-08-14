@@ -80,7 +80,6 @@ Temporary Items
 docker/db/data
 docker/db/conf.d
 docker/db/log
-serviceAccountKey.json
 
 # Local env files
 .env
