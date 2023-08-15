@@ -5,12 +5,12 @@
       <v-container>
         <v-row>
           <v-col>
-            <div class="circle">
+            <div class="circle" @click="navigateTo('/practices')">
               <h3>練習会開催・参加</h3>
             </div>
           </v-col>
           <v-col>
-            <div class="circle">
+            <div class="circle" @click="navigateTo('/molkky_activities')">
               <h3>モル活投稿・情報収集</h3>
             </div>
           </v-col>
@@ -22,7 +22,7 @@
     
     <div class="practice-wrapper">
       <h2 class="practice-title">新着の練習会<span class="sub-title">~練習会や練習試合に参加してみよう~</span></h2>
-      <v-btn class="home-btn" color="green">
+      <v-btn class="home-btn" color="green" @click="navigateTo('/practices/create')">
         練習会を開催する
       </v-btn>
       
@@ -38,7 +38,7 @@
     
     <div class="molkky-activity-wrapper">
       <h2 class="molkky-activity-title">新着のモル活<span class="sub-title">~練習をした記録を投稿してみよう~</span></h2>
-      <v-btn class="home-btn" color="green">
+      <v-btn class="home-btn" color="green" @click="navigateTo('/molkky_activities/create')">
         モル活を投稿する
       </v-btn>
       
@@ -100,6 +100,12 @@ const molkkyActivities = [
   text-align: center;
   color: #444;
   line-height: 100px;
+  cursor: pointer;
+}
+
+.circle:hover {
+  background-color: #eee;
+  text-decoration: underline;
 }
 
 .practice-title {

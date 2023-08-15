@@ -6,10 +6,12 @@
     min-width="350"
     variant="outlined"
     density="compact"
+    @click="navigateTo('/practices/' + props.molkkyActivity.uuid)"
   >
     <template #title>
       <UserIcon iconUrl="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"/>
       {{ props.molkkyActivity.posterId }}
+      <v-icon :icon="mdiMapMarker"></v-icon>
     </template>
     
     <template #text>
