@@ -1,8 +1,8 @@
 package com.morimoto.taichi.moruku.controller.v1;
 
 import com.morimoto.taichi.moruku.domain.entity.Question;
-import com.morimoto.taichi.moruku.domain.service.QuestionService;
 import com.morimoto.taichi.moruku.exception.NoSuchIdException;
+import com.morimoto.taichi.moruku.service.QuestionService;
 import com.morimoto.taichi.moruku.controller.v1.request.QuestionRequest;
 import com.morimoto.taichi.moruku.controller.v1.response.QuestionDetailResponse;
 import com.morimoto.taichi.moruku.controller.v1.response.QuestionResponse;

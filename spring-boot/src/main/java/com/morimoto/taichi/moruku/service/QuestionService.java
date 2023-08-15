@@ -1,4 +1,4 @@
-package com.morimoto.taichi.moruku.domain.service;
+package com.morimoto.taichi.moruku.service;
 
 import com.morimoto.taichi.moruku.domain.entity.Question;
 import com.morimoto.taichi.moruku.domain.repository.QuestionMapper;
