@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.morimoto.taichi.moruku.controller.v1.request.PracticeRequest;
 import com.morimoto.taichi.moruku.controller.v1.response.PracticeResponse;
 import com.morimoto.taichi.moruku.domain.entity.Practice;
-import com.morimoto.taichi.moruku.domain.service.PracticeService;
 import com.morimoto.taichi.moruku.exception.NoSuchIdException;
+import com.morimoto.taichi.moruku.service.PracticeService;
 
 
 @RestController

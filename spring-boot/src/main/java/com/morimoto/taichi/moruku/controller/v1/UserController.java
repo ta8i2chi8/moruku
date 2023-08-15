@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.morimoto.taichi.moruku.controller.v1.request.UserRequest;
 import com.morimoto.taichi.moruku.controller.v1.response.UserResponse;
 import com.morimoto.taichi.moruku.domain.entity.User;
-import com.morimoto.taichi.moruku.domain.service.UserService;
 import com.morimoto.taichi.moruku.exception.NoSuchIdException;
+import com.morimoto.taichi.moruku.service.UserService;
 
 
 @RestController

@@ -1,4 +1,4 @@
-package com.morimoto.taichi.moruku.domain.service;
+package com.morimoto.taichi.moruku.service;
 
 import java.util.Objects;
 import java.util.UUID;
