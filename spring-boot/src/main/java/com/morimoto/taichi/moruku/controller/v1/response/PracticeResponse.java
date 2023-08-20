@@ -19,7 +19,7 @@ public class PracticeResponse {
     private String title;
     private String description;
     private Integer maxParticipants;
-    private byte prefectureId;
+    private Integer prefectureId;
     private String organizerId;
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate heldOn;

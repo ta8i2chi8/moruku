@@ -5,8 +5,9 @@
         <p class="search-label">都道府県</p>
         <v-select
           class="pref-select input"
+          v-model="selectedPrefecture"
           label="選択してください"
-          :items="['選択してください', '東京都', '千葉県']"
+          :items="PREFECTURE_LIST"
           variant="outlined"
           density="compact"
           single-line
@@ -16,22 +17,33 @@
 
       <div>
         <p class="search-label">開催日</p>
-        <Datepicker class="datepicker input" v-model="startDate" :enable-time-picker="false"/>
+        <Datepicker
+          class="datepicker input" 
+          v-model="selectedStartDate" 
+          :enable-time-picker="false"
+          format="yyyy/MM/dd"
+        />
         <span class="from-to">〜</span>
-        <Datepicker class="datepicker input" v-model="endDate" :enable-time-picker="false"/>
+        <Datepicker 
+          class="datepicker input" 
+          v-model="selectedEndDate" 
+          :enable-time-picker="false"
+          format="yyyy/MM/dd"
+        />
       </div>
 
       <div>
         <p class="search-label">キーワード</p>
         <v-text-field 
           class="keyword input"
+          v-model="inputtedKeyword"
           variant="outlined"
           density="compact"
           hide-details
         ></v-text-field>      
       </div>
 
-      <v-btn class="search-btn" color="grey" @click="navigateTo('/practices/create')">
+      <v-btn class="search-btn" color="grey" @click="onClickSearch">
         検索
       </v-btn>
     </div>
@@ -60,10 +72,61 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import { PracticeRepositoryImpl } from '@/domain/repositories/practice-repository';
 
 const practiceRepository = new PracticeRepositoryImpl();
-const startDate = ref(new Date());
-const endDate = ref(new Date());
 
-const practices = await practiceRepository.getPractices();
+const PREFECTURE_LIST = ["選択してください","北海道","青森県","岩手県","宮城県","秋田県","山形県","福島県","茨城県","栃木県","群馬県","埼玉県","千葉県","東京都","神奈川県","新潟県","富山県","石川県","福井県","山梨県","長野県","岐阜県","静岡県","愛知県","三重県","滋賀県","京都府","大坂府","兵庫県","奈良県","和歌山県","鳥取県","島根県","岡山県","広島県","山口県","徳島県","香川県","愛媛県","高知県","福岡県","佐賀県","長崎県","熊本県","大分県","宮崎県","鹿児島県","沖縄県"];
+
+const selectedPrefecture = ref("選択してください");
+const selectedStartDate: Ref<Date | null> = ref(new Date());
+const selectedEndDate: Ref<Date | null> = ref(null);
+const inputtedKeyword = ref("");
+
+
+let practices = ref(await practiceRepository.getPractices());
+
+const onClickSearch = async () => {
+  console.log(selectedPrefecture.value);
+  console.log(getPrefectureId(selectedPrefecture.value));
+  console.log("-----");
+  console.log(selectedStartDate.value);
+  console.log(selectedStartDate.value?.toLocaleDateString("ja-JP", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).split("/")
+        .join("-") 
+    ?? null);
+  console.log("-----");
+  console.log(selectedEndDate.value);
+  console.log(selectedEndDate.value?.toLocaleDateString("ja-JP", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).split("/")
+        .join("-")
+    ?? null);
+  console.log("-----");
+  console.log(inputtedKeyword.value);
+  console.log("-----");
+
+  practices.value = await practiceRepository.searchPractices(
+    getPrefectureId(selectedPrefecture.value),
+    selectedStartDate.value?.toLocaleDateString("ja-JP", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).split("/")
+        .join("-") 
+    ?? null,
+    selectedEndDate.value?.toLocaleDateString("ja-JP", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).split("/")
+        .join("-")
+    ?? null,
+    inputtedKeyword.value,
+  );
+};
 </script>
 
 <style scoped>
@@ -99,7 +162,7 @@ const practices = await practiceRepository.getPractices();
 }
 
 .input {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .search-btn {
@@ -116,7 +179,7 @@ const practices = await practiceRepository.getPractices();
 
 .practice-title {
   display: block;
-  margin-top: 60px;
+  margin-top: 30px;
   text-align: center;
 }
 
@@ -129,6 +192,11 @@ const practices = await practiceRepository.getPractices();
 .hold-btn {
   display: block;
   margin-left: auto;
+}
+
+.no-results {
+  margin: 15px 0px 40px 0px;
+  text-align: center;
 }
 
 .card-list {

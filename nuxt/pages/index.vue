@@ -60,8 +60,8 @@ import { PracticeRepositoryImpl } from '@/domain/repositories/practice-repositor
 
 const practiceRepository = new PracticeRepositoryImpl();
 
-const practices = await practiceRepository.getPractices();
-const molkkyActivities = [
+const practices = ref(await practiceRepository.getPractices(3, 0));
+const molkkyActivities = ref([
   new MolkkyActivity(
     "asdf",
     "練習メニュー: 12mトレ",
@@ -76,7 +76,7 @@ const molkkyActivities = [
     13,
     "2023-01-01T10:10:10",
   ),
-];
+]);
 </script>
 
 <style scoped>

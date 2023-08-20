@@ -1,5 +1,6 @@
 package com.morimoto.taichi.moruku.domain.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,8 +20,51 @@ public interface PracticeMapper {
             uuid, title, description, max_participants, prefecture_id, organizer_id, held_on, created_at 
         FROM 
             practices
+        ORDER BY 
+            created_at DESC
+        LIMIT 
+            #{limit}
+        OFFSET 
+            #{offset}
     """)
-    List<Practice> findAll();
+    List<Practice> findAll(Integer limit, Integer offset);
+
+    @Select("""
+    <script>
+        SELECT 
+            uuid, title, description, max_participants, prefecture_id, organizer_id, held_on, created_at 
+        FROM 
+            practices
+        <where>
+            <if test="prefectureId != null">
+                AND prefecture_id = #{prefectureId}
+            </if>
+            <if test="from != null">
+                AND held_on <![CDATA[ >= ]]> #{from}
+            </if>
+            <if test="to != null">
+                AND held_on <![CDATA[ <= ]]> #{to}
+            </if>
+            <if test="keyword != null">
+                AND (title LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
+        ORDER BY 
+            created_at DESC
+        LIMIT 
+            #{limit}
+        OFFSET 
+            #{offset}
+    </script>
+    """)
+    List<Practice> search(
+        Integer limit, 
+        Integer offset, 
+        Integer prefectureId, 
+        LocalDate from,
+        LocalDate to,
+        String keyword
+    );
 
     @Select("""
         SELECT 
