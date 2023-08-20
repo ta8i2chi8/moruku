@@ -1,5 +1,6 @@
 package com.morimoto.taichi.moruku.service;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -31,8 +32,31 @@ public class PracticeService {
     @Autowired
     private UserMapper userMapper;
 
-    public List<Practice> findAll() {
-        List<Practice> practices = practiceMapper.findAll();
+    public List<Practice> findAll(Integer limit, Integer offset) {
+        List<Practice> practices = practiceMapper.findAll(limit, offset);
+
+        if (Objects.isNull(practices)) {
+            return Collections.emptyList();
+        }
+        return practices;
+    }
+
+    public List<Practice> search(
+        Integer limit, 
+        Integer offset, 
+        Integer prefectureId, 
+        LocalDate from,
+        LocalDate to,
+        String keyword
+    ) {
+        List<Practice> practices = practiceMapper.search(
+            limit, 
+            offset, 
+            prefectureId,
+            from,
+            to,
+            keyword
+        );
 
         if (Objects.isNull(practices)) {
             return Collections.emptyList();

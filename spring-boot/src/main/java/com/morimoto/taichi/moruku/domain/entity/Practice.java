@@ -23,7 +23,7 @@ public class Practice {
     private String title;
     private String description;
     private Integer maxParticipants;
-    private byte prefectureId;
+    private Integer prefectureId;
     private UUID organizerId;
     private LocalDate heldOn;
     private LocalDateTime createdAt;

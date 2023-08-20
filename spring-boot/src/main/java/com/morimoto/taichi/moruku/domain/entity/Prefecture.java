@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 // Builderクラスを自動的に生成
 @Builder
 public class Prefecture {
-    private byte id;
+    private Integer id;
     private String name;
     private String name_kana;
 }

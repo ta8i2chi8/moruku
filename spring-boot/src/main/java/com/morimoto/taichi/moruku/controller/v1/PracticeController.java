@@ -1,5 +1,6 @@
 package com.morimoto.taichi.moruku.controller.v1;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +24,10 @@ import com.morimoto.taichi.moruku.controller.v1.response.PracticeResponse;
 import com.morimoto.taichi.moruku.domain.entity.Practice;
 import com.morimoto.taichi.moruku.exception.NoSuchIdException;
 import com.morimoto.taichi.moruku.service.PracticeService;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 
 @RestController
@@ -32,8 +38,51 @@ public class PracticeController {
     private PracticeService practiceService;
 
     @GetMapping
-    public List<PracticeResponse> findAll() {
-        List<Practice> practices = practiceService.findAll();
+    public List<PracticeResponse> findAll(
+        @RequestParam(value = "limit", required = false) Integer limit, 
+        @RequestParam(value = "offset", required = false) Integer offset
+    ) {
+        if (limit == null) limit = 20;
+        if (offset == null) offset = 0;
+
+        List<Practice> practices = practiceService.findAll(limit, offset);
+
+        List<PracticeResponse> responses = new ArrayList<>();
+        for (Practice practice : practices) {
+            responses.add(new PracticeResponse(
+                practice.getUuid().toString(), 
+                practice.getTitle(), 
+                practice.getDescription(), 
+                practice.getMaxParticipants(), 
+                practice.getPrefectureId(), 
+                practice.getOrganizerId().toString(), 
+                practice.getHeldOn(), 
+                practice.getCreatedAt()
+            ));
+        }
+        return responses;
+    }
+
+    @GetMapping("/search")
+    public List<PracticeResponse> search(
+        @RequestParam(value = "limit", required = false) Integer limit, 
+        @RequestParam(value = "offset", required = false) Integer offset,
+        @Min(1) @Max(47) @Valid @RequestParam(value = "prefectureId", required = false) Integer prefectureId,
+        @RequestParam(value = "from", required = false) LocalDate from,
+        @RequestParam(value = "to", required = false) LocalDate to,
+        @RequestParam(value = "keyword", required = false) String keyword
+    ) {
+        if (limit == null) limit = 20;
+        if (offset == null) offset = 0;
+
+        List<Practice> practices = practiceService.search(
+            limit, 
+            offset, 
+            prefectureId,
+            from,
+            to,
+            keyword
+        );
 
         List<PracticeResponse> responses = new ArrayList<>();
         for (Practice practice : practices) {

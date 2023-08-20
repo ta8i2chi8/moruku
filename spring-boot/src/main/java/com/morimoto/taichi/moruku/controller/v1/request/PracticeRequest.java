@@ -20,7 +20,7 @@ public class PracticeRequest {
 
     @Min(1)
     @Max(47)
-    private byte prefectureId;
+    private Integer prefectureId;
     
     @NotBlank
     private String organizerId;
@@ -51,11 +51,11 @@ public class PracticeRequest {
         this.maxParticipants = maxParticipants;
     }
 
-    public byte getPrefectureId() {
+    public Integer getPrefectureId() {
         return prefectureId;
     }
 
-    public void setPrefectureId(byte prefectureId) {
+    public void setPrefectureId(Integer prefectureId) {
         this.prefectureId = prefectureId;
     }
 

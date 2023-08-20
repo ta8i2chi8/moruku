@@ -19,6 +19,7 @@
     "vuetify": "^3.3.10"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^6.0.0",
     "firebase": "^10.1.0"
   }
 }

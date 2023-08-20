@@ -5,12 +5,12 @@
       <v-container>
         <v-row>
           <v-col>
-            <div class="circle">
+            <div class="circle" @click="navigateTo('/practices')">
               <h3>練習会開催・参加</h3>
             </div>
           </v-col>
           <v-col>
-            <div class="circle">
+            <div class="circle" @click="navigateTo('/molkky_activities')">
               <h3>モル活投稿・情報収集</h3>
             </div>
           </v-col>
@@ -21,11 +21,12 @@
     <v-divider thickness="3" color="grey"></v-divider>
     
     <div class="practice-wrapper">
-      <h2 class="practice-title">新着の練習会<span class="sub-title">~練習会や練習試合に参加してみよう~</span></h2>
-      <v-btn class="home-btn" color="green">
-        練習会を開催する
-      </v-btn>
-      
+      <div class="practice-wrapper-top">
+        <h2 class="practice-title">新着の練習会<span class="sub-title">~練習会や練習試合に参加してみよう~</span></h2>
+        <v-btn class="home-btn" color="green" @click="navigateTo('/practices/create')">
+          練習会を開催する
+        </v-btn>
+      </div>
       <p v-if="practices.length === 0" class="no-results">練習会がありません😭</p>
       <ul v-else class="card-list">
         <li v-for="practice in practices" :key="practice.uuid">
@@ -37,11 +38,12 @@
     <v-divider thickness="3" color="grey"></v-divider>
     
     <div class="molkky-activity-wrapper">
-      <h2 class="molkky-activity-title">新着のモル活<span class="sub-title">~練習をした記録を投稿してみよう~</span></h2>
-      <v-btn class="home-btn" color="green">
-        モル活を投稿する
-      </v-btn>
-      
+      <div class="molkky-activity-wrapper-top">
+        <h2 class="molkky-activity-title">新着のモル活<span class="sub-title">~練習をした記録を投稿してみよう~</span></h2>
+        <v-btn class="home-btn" color="green" @click="navigateTo('/molkky_activities/create')">
+          モル活を投稿する
+        </v-btn>
+      </div>
       <p v-if="molkkyActivities.length === 0" class="no-results">投稿がありません😭</p>
       <ul v-else class="card-list">
         <li v-for="molkkyActivity in molkkyActivities" :key="molkkyActivity.uuid">
@@ -58,8 +60,8 @@ import { PracticeRepositoryImpl } from '@/domain/repositories/practice-repositor
 
 const practiceRepository = new PracticeRepositoryImpl();
 
-const practices = await practiceRepository.getPractices();
-const molkkyActivities = [
+const practices = ref(await practiceRepository.getPractices(3, 0));
+const molkkyActivities = ref([
   new MolkkyActivity(
     "asdf",
     "練習メニュー: 12mトレ",
@@ -74,7 +76,7 @@ const molkkyActivities = [
     13,
     "2023-01-01T10:10:10",
   ),
-];
+]);
 </script>
 
 <style scoped>
@@ -100,7 +102,22 @@ const molkkyActivities = [
   text-align: center;
   color: #444;
   line-height: 100px;
+  cursor: pointer;
 }
+
+.circle:hover {
+  background-color: #eee;
+  text-decoration: underline;
+}
+
+.practice-wrapper-top,
+.molkky-activity-wrapper-top {
+  margin: 0px auto;
+  width: 80%;
+  max-width: 1000px;
+  min-width: 350px;
+}
+
 
 .practice-title {
   display: block;
@@ -120,14 +137,9 @@ const molkkyActivities = [
   font-weight: normal;
 }
 
-.disable {
-  display: disable;
-}
-
 .home-btn {
   display: block;
   margin-left: auto;
-  margin-right: 10px;
 }
 
 .card-list {

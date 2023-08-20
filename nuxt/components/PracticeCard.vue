@@ -6,6 +6,7 @@
     min-width="350"
     variant="outlined"
     density="compact"
+    @click="navigateTo('/practices/' + props.practice.uuid)"
   >
     <template #title>
       {{ props.practice.title }}
