@@ -23,9 +23,14 @@
         <span>{{ prefectureName }}</span>
       </div>
 
+      <div class="actions-icon">
+        <v-icon :icon="mdiCalendarCheck"></v-icon>
+        <span>{{ formatedHeldOn }}</span>
+      </div>
+
       <v-spacer></v-spacer>
 
-      <span>公開日: {{ formatedHeldOn }}</span>
+      <span>公開日: {{ formatedCreatedAt }}</span>
     </v-card-actions>
   </v-card>
 </template>
@@ -33,6 +38,7 @@
 <script setup lang="ts">
 import { mdiAccount } from '@mdi/js';
 import { mdiMapMarker } from '@mdi/js';
+import { mdiCalendarCheck } from '@mdi/js';
 import Practice from '@/domain/entitys/practice';
 
 interface Props {
@@ -43,6 +49,7 @@ const props = defineProps<Props>();
 
 const prefectureName = computed(() => getPrefecture(props.practice.prefectureId));
 const formatedHeldOn = computed(() => new Date(props.practice.heldOn).toLocaleDateString('ja-JP'));
+const formatedCreatedAt = computed(() => new Date(props.practice.createdAt).toLocaleDateString('ja-JP'));
 </script>
 
 <style scoped>

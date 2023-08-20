@@ -10,6 +10,7 @@ export interface PracticeRepository {
     limit?: number, 
     offset?: number
   ): Promise<Practice[]>;
+  getPracticeById(uuid: string): Promise<Practice>;
 }
 
 export class PracticeRepositoryImpl implements PracticeRepository {
@@ -52,7 +53,19 @@ export class PracticeRepositoryImpl implements PracticeRepository {
       console.error(error.value);
       throw createError({
         statusCode: error.value.statusCode, 
-        statusMessage: "error: getPractices API"
+        statusMessage: "error: searchPractices API"
+      });
+    }
+    return data.value;
+  }
+
+  async getPracticeById(uuid: string): Promise<Practice> {
+    const { data, pending, error, refresh } = await useFetchMorukuPublicApi(`/practices/${uuid}`);
+    if (error.value !== null) {
+      console.error(error.value);
+      throw createError({
+        statusCode: error.value.statusCode, 
+        statusMessage: "error: getPracticeById API"
       });
     }
     return data.value;
