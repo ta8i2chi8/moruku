@@ -136,12 +136,19 @@ const onClickRelease = async () => {
     return;
   }
 
+  // for debug
+  // console.log(inputtedTitle.value);
+  // console.log(inputtedDescription.value);
+  // console.log(selectedNumPeopleFlag.value ? parseInt(validatedNumPeople.value) : null);
+  // console.log(getPrefectureId(selectedPlace.value));
+  // console.log(selectedDate.value ? toLocaleDateStringJa(selectedDate.value) : null);
+
   await practiceRepository.insertPractice({
     title: inputtedTitle.value,
     description: inputtedDescription.value,
     maxParticipants: selectedNumPeopleFlag.value ? parseInt(validatedNumPeople.value) : null,
     prefectureId: getPrefectureId(selectedPlace.value),
-    heldOn: selectedDate.value?.toISOString() ?? null,
+    heldOn: selectedDate.value ? toLocaleDateStringJa(selectedDate.value) : null,
   });
 
   await navigateTo("/practices");
