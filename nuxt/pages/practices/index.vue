@@ -86,20 +86,8 @@ let practices = ref(await practiceRepository.getPractices());
 const onClickSearch = async () => {
   practices.value = await practiceRepository.searchPractices(
     getPrefectureId(selectedPrefecture.value),
-    selectedStartDate.value?.toLocaleDateString("ja-JP", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).split("/")
-        .join("-") 
-    ?? null,
-    selectedEndDate.value?.toLocaleDateString("ja-JP", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).split("/")
-        .join("-")
-    ?? null,
+    selectedStartDate.value ? toLocaleDateStringJa(selectedStartDate.value) : null,
+    selectedEndDate.value ? toLocaleDateStringJa(selectedEndDate.value) : null,
     inputtedKeyword.value,
   );
 };

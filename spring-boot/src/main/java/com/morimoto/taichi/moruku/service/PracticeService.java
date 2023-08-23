@@ -74,36 +74,29 @@ public class PracticeService {
     }
 
     public void insert(Practice practice) throws NoSuchIdException {
+        String firebaseUid = securityConfig.getFirebaseUid();
+        User user = userMapper.findByFirebaseUid(firebaseUid);
+
         // organizerIdの存在チェック
-        UUID uuid = practice.getOrganizerId();
-        User user = userMapper.findByUuid(uuid);
         if (Objects.isNull(user)) {
-            throw new NoSuchIdException("users tableにuuid " + uuid + "が存在していません");
+            throw new NoSuchIdException("users tableにuuid " + firebaseUid + "が存在していません");
         }
 
+        practice.setOrganizerId(user.getUuid());
         practiceMapper.insert(practice);
     }
 
     public void update(Practice practice) throws NoSuchIdException {
-        // organizerIdの存在チェック
-        UUID uuid = practice.getOrganizerId();
-        User user = userMapper.findByUuid(uuid);
-        if (Objects.isNull(user)) {
-            throw new NoSuchIdException("users tableにuuid " + uuid + "が存在していません");
-        }
-        
         int updatedCount = practiceMapper.update(practice);
 
-        // uuidの存在チェック
         if (updatedCount == 0) {
-            throw new NoSuchIdException("practices tableにuuid " + uuid + "が存在していません");
+            throw new NoSuchIdException("practices tableにuuid " + practice.getUuid() + "が存在していません");
         }
     }
 
     public void delete(UUID uuid) throws NoSuchIdException {
         int deletedCount = practiceMapper.delete(uuid);
 
-        // uuidの存在チェック
         if (deletedCount == 0) {
             throw new NoSuchIdException("practices tableにuuid " + uuid + "が存在していません");
         }

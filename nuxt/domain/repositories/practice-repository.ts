@@ -1,5 +1,13 @@
 import Practice from "@/domain/entitys/practice";
 
+type RequestBody = {
+  title: string;
+  description: string;
+  maxParticipants: number | null;
+  prefectureId: number | null;
+  heldOn: string | null;
+}
+
 export interface PracticeRepository {
   getPractices(limit?: number, offset?: number): Promise<Practice[]>;
   searchPractices(
@@ -11,6 +19,7 @@ export interface PracticeRepository {
     offset?: number
   ): Promise<Practice[]>;
   getPracticeById(uuid: string): Promise<Practice>;
+  insertPractice(requestBody: RequestBody): Promise<void>;
 }
 
 export class PracticeRepositoryImpl implements PracticeRepository {
@@ -66,6 +75,21 @@ export class PracticeRepositoryImpl implements PracticeRepository {
       throw createError({
         statusCode: error.value.statusCode, 
         statusMessage: "error: getPracticeById API"
+      });
+    }
+    return data.value;
+  }
+
+  async insertPractice(requestBody: RequestBody): Promise<void> {
+    const { data, pending, error, refresh } = await useFetchMorukuPrivateApi('/practices', {
+      method: "POST",
+      body: requestBody,
+    });
+    if (error.value !== null) {
+      console.error(error.value);
+      throw createError({
+        statusCode: error.value.statusCode, 
+        statusMessage: "error: insertPractice API"
       });
     }
     return data.value;
