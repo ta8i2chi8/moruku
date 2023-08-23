@@ -127,32 +127,24 @@ const validatedNumPeople = computed({
     }
 
     selectedNumPeople.value = `${intValue}`;
-    console.log(selectedNumPeople.value);
   }
 });
 
 const onClickRelease = async () => {
-  const { user } = useAuth();
-
-  console.log(inputtedTitle.value);
-  console.log(inputtedDescription.value);
-  console.log(selectedNumPeopleFlag.value ? parseInt(validatedNumPeople.value) : null);
-  console.log(getPrefectureId(selectedPlace.value));
-  console.log(user.value);
-  console.log(selectedDate.value?.toISOString() ?? null);
-
   if (inputtedTitle.value === '') {
     errorMessage.value = 'タイトルの入力は必須です';
     return;
   }
-  // await practiceRepository.insertPractice({
-  //   title: inputtedTitle.value,
-  //   description: inputtedDescription.value,
-  //   maxParticipants: parseInt(validatedNumPeople.value),
-  //   prefectureId: getPrefectureId(selectedPlace.value),
-  //   organizerId: 1,
-  //   heldOn: selectedDate.value.toLocaleString(),
-  // });
+
+  await practiceRepository.insertPractice({
+    title: inputtedTitle.value,
+    description: inputtedDescription.value,
+    maxParticipants: selectedNumPeopleFlag.value ? parseInt(validatedNumPeople.value) : null,
+    prefectureId: getPrefectureId(selectedPlace.value),
+    heldOn: selectedDate.value?.toISOString() ?? null,
+  });
+
+  await navigateTo("/practices");
 };
 </script>
 

@@ -5,7 +5,6 @@ type RequestBody = {
   description: string;
   maxParticipants: number | null;
   prefectureId: number | null;
-  organizerId: string;
   heldOn: string | null;
 }
 
