@@ -123,7 +123,6 @@ public class PracticeController {
         newPractice.setDescription(practiceRequest.getDescription());
         newPractice.setMaxParticipants(practiceRequest.getMaxParticipants());
         newPractice.setPrefectureId(practiceRequest.getPrefectureId());
-        newPractice.setOrganizerId(UUID.fromString(practiceRequest.getOrganizerId()));
         newPractice.setHeldOn(practiceRequest.getHeldOn());
 
         practiceService.insert(newPractice);
@@ -137,7 +136,6 @@ public class PracticeController {
         newPractice.setDescription(practiceRequest.getDescription());
         newPractice.setMaxParticipants(practiceRequest.getMaxParticipants());
         newPractice.setPrefectureId(practiceRequest.getPrefectureId());
-        newPractice.setOrganizerId(UUID.fromString(practiceRequest.getOrganizerId()));
         newPractice.setHeldOn(practiceRequest.getHeldOn());
         
         practiceService.update(newPractice);

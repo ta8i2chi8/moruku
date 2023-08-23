@@ -22,9 +22,6 @@ public class PracticeRequest {
     @Max(47)
     private Integer prefectureId;
     
-    @NotBlank
-    private String organizerId;
-    
     private LocalDate heldOn;
 
     public String getTitle() {
@@ -57,14 +54,6 @@ public class PracticeRequest {
 
     public void setPrefectureId(Integer prefectureId) {
         this.prefectureId = prefectureId;
-    }
-
-    public String getOrganizerId() {
-        return organizerId;
-    }
-
-    public void setOrganizerId(String organizerId) {
-        this.organizerId = organizerId;
     }
 
     public LocalDate getHeldOn() {

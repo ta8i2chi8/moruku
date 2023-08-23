@@ -93,7 +93,6 @@ public interface PracticeMapper {
             description = #{description},
             max_participants = #{maxParticipants},
             prefecture_id = #{prefectureId},
-            organizer_id = #{organizerId},
             held_on = #{heldOn}
         WHERE uuid = #{uuid}
     """)
