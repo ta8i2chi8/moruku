@@ -23,6 +23,7 @@ import com.morimoto.taichi.moruku.controller.v1.request.PracticeRequest;
 import com.morimoto.taichi.moruku.controller.v1.response.PracticeResponse;
 import com.morimoto.taichi.moruku.domain.entity.Practice;
 import com.morimoto.taichi.moruku.exception.NoSuchIdException;
+import com.morimoto.taichi.moruku.exception.NotMyEntityException;
 import com.morimoto.taichi.moruku.service.PracticeService;
 
 import jakarta.validation.Valid;
@@ -129,7 +130,7 @@ public class PracticeController {
     }
     
     @PutMapping("/{uuid}")
-    public void update(@PathVariable String uuid, @RequestBody @Validated PracticeRequest practiceRequest) throws NoSuchIdException {
+    public void update(@PathVariable String uuid, @RequestBody @Validated PracticeRequest practiceRequest) throws NoSuchIdException, NotMyEntityException {
         Practice newPractice = new Practice();
         newPractice.setUuid(UUID.fromString(uuid));
         newPractice.setTitle(practiceRequest.getTitle());
