@@ -32,6 +32,19 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleNotMyEntityException(NotMyEntityException e) {
+        logger.info(e.getMessage(), e);
+        return new ErrorResponse(
+            HttpStatus.FORBIDDEN.value(), 
+            "", 
+            "自分以外が開催した練習会は編集できません", 
+            e.getMessage(), 
+            "自分が開催した練習会ではありません。対象としている練習会を確認してください"
+        );
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         logger.info(e.getMessage(), e);

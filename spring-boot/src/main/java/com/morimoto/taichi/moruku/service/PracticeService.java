@@ -16,6 +16,7 @@ import com.morimoto.taichi.moruku.domain.repository.ParticipantionMapper;
 import com.morimoto.taichi.moruku.domain.repository.PracticeMapper;
 import com.morimoto.taichi.moruku.domain.repository.UserMapper;
 import com.morimoto.taichi.moruku.exception.NoSuchIdException;
+import com.morimoto.taichi.moruku.exception.NotMyEntityException;
 
 @Service
 public class PracticeService {
@@ -86,11 +87,21 @@ public class PracticeService {
         practiceMapper.insert(practice);
     }
 
-    public void update(Practice practice) throws NoSuchIdException {
+    public void update(Practice practice) throws NoSuchIdException, NotMyEntityException {
+        String firebaseUid = securityConfig.getFirebaseUid();
+        User user = userMapper.findByFirebaseUid(firebaseUid);
+
+        // 自分で開催した練習会かどうかをチェック
+        Practice currentPractice = practiceMapper.findById(practice.getUuid());
+        UUID organizerId = currentPractice.getOrganizerId();
+        if (!(organizerId.equals(user.getUuid()))) {
+            throw new NotMyEntityException("ユーザーのUUID(" + user.getUuid().toString() + ")が、練習会の開催者のUUID(" + organizerId + ")と一致しません");
+        }
+
         int updatedCount = practiceMapper.update(practice);
 
         if (updatedCount == 0) {
-            throw new NoSuchIdException("practices tableにuuid " + practice.getUuid() + "が存在していません");
+            throw new NoSuchIdException("practices tableにuuid " + practice.getUuid().toString() + "が存在していません");
         }
     }
 
