@@ -20,6 +20,7 @@ export interface PracticeRepository {
   ): Promise<Practice[]>;
   getPracticeById(uuid: string): Promise<Practice>;
   insertPractice(requestBody: RequestBody): Promise<void>;
+  joinPractice(practiceUuid: string): Promise<void>;
 }
 
 export class PracticeRepositoryImpl implements PracticeRepository {
@@ -90,6 +91,20 @@ export class PracticeRepositoryImpl implements PracticeRepository {
       throw createError({
         statusCode: error.value.statusCode, 
         statusMessage: "error: insertPractice API"
+      });
+    }
+    return data.value;
+  }
+
+  async joinPractice(practiceUuid: string): Promise<void> {
+    const { data, pending, error, refresh } = await useFetchMorukuPrivateApi(`/practices/${practiceUuid}/join`, {
+      method: "POST",
+    });
+    if (error.value !== null) {
+      console.error(error.value);
+      throw createError({
+        statusCode: error.value.statusCode, 
+        statusMessage: "error: joinPractice API"
       });
     }
     return data.value;

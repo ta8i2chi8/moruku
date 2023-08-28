@@ -28,10 +28,26 @@
       </div>
     </div>
 
-    <v-btn class="join-btn" color="green" @click="">
+    <v-btn class="join-btn" color="green" @click="onClickJoin">
       参加する
     </v-btn>
   </div>
+
+  <v-snackbar
+    v-model="isDisplaySnackbar"
+    timeout="2000"
+  >
+    参加の申し込みが完了しました
+    <template v-slot:actions>
+      <v-btn
+        color="blue"
+        variant="text"
+        @click="isDisplaySnackbar = false"
+      >
+        Close
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script setup lang="ts">
@@ -45,10 +61,16 @@ const uuid = route.params.uuid as string;
 
 const practiceRepository = new PracticeRepositoryImpl();
 const practice = ref(await practiceRepository.getPracticeById(uuid));
+const isDisplaySnackbar = ref(false);
 
 const prefectureName = computed(() => getPrefecture(practice.value.prefectureId));
 const formatedHeldOn = computed(() => new Date(practice.value.heldOn).toLocaleDateString('ja-JP'));
 const formatedCreatedAt = computed(() => new Date(practice.value.createdAt).toLocaleDateString('ja-JP'));
+
+const onClickJoin = async () => {
+  await practiceRepository.joinPractice(practice.value.uuid);
+  isDisplaySnackbar.value = true;
+};
 </script>
 
 <style scoped>
