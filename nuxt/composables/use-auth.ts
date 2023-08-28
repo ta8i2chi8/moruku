@@ -3,6 +3,7 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithPopup,
+  getAdditionalUserInfo,
   createUserWithEmailAndPassword,
   sendEmailVerification,
   signInWithEmailAndPassword,
@@ -54,10 +55,23 @@ export const useAuth = (auth: Auth = getAuth()) => {
   };
   
   // Googleでサインイン
-  const signInWithGoogle = async () => {
+  // 補足：サインインに成功したらtrue、失敗したらfalseを出力
+  const signInWithGoogle = async (): Promise<boolean> => {
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      const userCredential = await signInWithPopup(auth, provider);
+
+      // サインアップ済みかチェック
+      const additionalUserInfo = getAdditionalUserInfo(userCredential);
+      console.log(additionalUserInfo);
+      if (additionalUserInfo === null) {
+        throw Error('additionalUserInfoがnullです');
+      } else if (additionalUserInfo.isNewUser) {
+        await userCredential.user.delete();
+        return false;
+      }
+      return true;
+
     } catch (error) {
       throw error;
     }
