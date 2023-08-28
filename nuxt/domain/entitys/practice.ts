@@ -6,6 +6,7 @@ export default class Practice {
   prefectureId: number;
   organizerId: string;
   heldOn: string;
+  isJoined: boolean;
   createdAt: string;
 
   constructor(
@@ -16,6 +17,7 @@ export default class Practice {
     prefectureId: number,
     organizerId: string,
     heldOn: string,
+    isJoined: boolean,
     createdAt: string
   ) {
     this.uuid = uuid;
@@ -25,6 +27,7 @@ export default class Practice {
     this.prefectureId = prefectureId;
     this.organizerId = organizerId;
     this.heldOn = heldOn;
+    this.isJoined = isJoined;
     this.createdAt = createdAt;
   }
 };

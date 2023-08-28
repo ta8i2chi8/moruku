@@ -71,6 +71,17 @@ public class PracticeService {
         if (Objects.isNull(practice)) {
             throw new NoSuchIdException("practices tableにuuid " + uuid + "が存在していません");
         }
+
+        String firebaseUid = securityConfig.getFirebaseUid();
+
+        int findedParticipantionCount = participantionMapper.findByIds(uuid, firebaseUid);
+        System.out.println(firebaseUid);
+        System.out.println(findedParticipantionCount);
+        if (findedParticipantionCount == 1) {
+            practice.setIsJoined(true);
+        } else {
+            practice.setIsJoined(false);
+        }
         return practice;
     }
 

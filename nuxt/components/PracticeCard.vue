@@ -15,17 +15,20 @@
     <v-card-actions>
       <div class="actions-icon">
         <v-icon :icon="mdiAccount"></v-icon>
-        <span>{{ props.practice.maxParticipants }}人</span>
+        <span v-if="props.practice.maxParticipants">{{ props.practice.maxParticipants }}人</span>
+        <span v-else>上限なし</span>
       </div>
       
       <div class="actions-icon">
         <v-icon :icon="mdiMapMarker"></v-icon>
-        <span>{{ prefectureName }}</span>
+        <span v-if="props.practice.prefectureId">{{ prefectureName }}</span>
+        <span v-else>未定</span>
       </div>
 
       <div class="actions-icon">
         <v-icon :icon="mdiCalendarCheck"></v-icon>
-        <span>{{ formatedHeldOn }}</span>
+        <span v-if="props.practice.heldOn">{{ formatedHeldOn }}</span>
+        <span v-else>未定</span>
       </div>
 
       <v-spacer></v-spacer>
