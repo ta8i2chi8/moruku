@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.morimoto.taichi.moruku.controller.v1.request.PracticeRequest;
+import com.morimoto.taichi.moruku.controller.v1.response.PracticeDetailResponse;
 import com.morimoto.taichi.moruku.controller.v1.response.PracticeResponse;
 import com.morimoto.taichi.moruku.domain.entity.Practice;
 import com.morimoto.taichi.moruku.exception.NoSuchIdException;
@@ -102,9 +103,9 @@ public class PracticeController {
     }
 
     @GetMapping("/{uuid}")
-    public PracticeResponse findById(@PathVariable String uuid) throws NoSuchIdException {
+    public PracticeDetailResponse findById(@PathVariable String uuid) throws NoSuchIdException {
         Practice practice = practiceService.findById(UUID.fromString(uuid));
-        return PracticeResponse.builder()
+        return PracticeDetailResponse.builder()
                 .uuid(practice.getUuid().toString())
                 .title(practice.getTitle())
                 .description(practice.getDescription())
@@ -112,6 +113,7 @@ public class PracticeController {
                 .prefectureId(practice.getPrefectureId())
                 .organizerId(practice.getOrganizerId().toString())
                 .heldOn(practice.getHeldOn())
+                .isJoined(practice.getIsJoined())
                 .createdAt(practice.getCreatedAt())
                 .build();
     }
