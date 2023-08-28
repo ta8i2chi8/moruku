@@ -8,17 +8,20 @@
         
         <div class="info">
           <v-icon :icon="mdiAccount"></v-icon>
-          <span>{{ practice.maxParticipants }}人</span>
+          <span v-if="practice.maxParticipants">{{ practice.maxParticipants }}人</span>
+          <span v-else>上限なし</span>
         </div>
         
         <div class="info">
           <v-icon :icon="mdiMapMarker"></v-icon>
-          <span>{{ prefectureName }}</span>
+          <span v-if="practice.prefectureId">{{ prefectureName }}</span>
+          <span v-else>未定</span>
         </div>
         
         <div class="info">
           <v-icon :icon="mdiCalendarCheck"></v-icon>
-          <span>{{ formatedHeldOn }}</span>
+          <span v-if="practice.heldOn">{{ formatedHeldOn }}</span>
+          <span v-else>未定</span>
         </div>
         
         <p class="info release-date">公開日: {{ formatedCreatedAt }}</p>
