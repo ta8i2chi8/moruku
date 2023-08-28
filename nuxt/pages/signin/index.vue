@@ -89,6 +89,22 @@
       </v-col>
     </v-row>
   </v-container>
+
+  <v-snackbar
+    v-model="isDisplaySnackbar"
+    timeout="5000"
+  >
+    未登録のユーザーです。先に会員登録してください
+    <template v-slot:actions>
+      <v-btn
+        color="red"
+        variant="text"
+        @click="isDisplaySnackbar = false"
+      >
+        Close
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script setup lang="ts">
@@ -101,14 +117,19 @@ definePageMeta({
 
 const inputEmail = ref('');
 const inputPassword = ref('');
+const isDisplaySnackbar = ref(false);
 
 const { signInWithGoogle, signInWithEmail } = useAuth();
 
 const onClickSignInWithGoogle = async () => {
-  await signInWithGoogle();
+  const isSucceeded = await signInWithGoogle();
 
-  const to = useRoute().redirectedFrom?.fullPath || '/'
-  await navigateTo(to, { redirectCode: 302 });
+  if (isSucceeded) {
+    const to = useRoute().redirectedFrom?.fullPath || '/'
+    await navigateTo(to, { redirectCode: 302 });
+  } else {
+    isDisplaySnackbar.value = true;
+  }
 };
 
 const onClickSignInWithEmail = async () => {

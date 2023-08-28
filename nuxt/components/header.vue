@@ -15,20 +15,20 @@
   </v-app-bar>
 
   <v-snackbar
-      v-model="isDisplaySnackbar"
-      timeout="2000"
-    >
-      ログアウトしました
-      <template v-slot:actions>
-        <v-btn
-          color="blue"
-          variant="text"
-          @click="isDisplaySnackbar = false"
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
+    v-model="isDisplaySnackbar"
+    timeout="2000"
+  >
+    ログアウトしました
+    <template v-slot:actions>
+      <v-btn
+        color="blue"
+        variant="text"
+        @click="isDisplaySnackbar = false"
+      >
+        Close
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script setup lang="ts">
