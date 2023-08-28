@@ -28,21 +28,40 @@
       </div>
     </div>
 
-    <v-btn class="join-btn" color="green" @click="onClickJoin">
+    <v-btn v-if="practice.isJoined" class="join-btn" color="red" @click="onClickCancel">
+      参加をキャンセルする
+    </v-btn>
+    <v-btn v-else class="join-btn" color="green" @click="onClickJoin">
       参加する
     </v-btn>
   </div>
 
   <v-snackbar
-    v-model="isDisplaySnackbar"
-    timeout="2000"
+    v-model="isDisplaySnackbarJoin"
+    timeout="5000"
   >
-    参加の申し込みが完了しました
+    参加を申し込みました
     <template v-slot:actions>
       <v-btn
         color="blue"
         variant="text"
-        @click="isDisplaySnackbar = false"
+        @click="isDisplaySnackbarJoin = false"
+      >
+        Close
+      </v-btn>
+    </template>
+  </v-snackbar>
+
+  <v-snackbar
+    v-model="isDisplaySnackbarCancel"
+    timeout="5000"
+  >
+    参加をキャンセルしました
+    <template v-slot:actions>
+      <v-btn
+        color="blue"
+        variant="text"
+        @click="isDisplaySnackbarCancel = false"
       >
         Close
       </v-btn>
@@ -61,7 +80,8 @@ const uuid = route.params.uuid as string;
 
 const practiceRepository = new PracticeRepositoryImpl();
 const practice = ref(await practiceRepository.getPracticeById(uuid));
-const isDisplaySnackbar = ref(false);
+const isDisplaySnackbarJoin = ref(false);
+const isDisplaySnackbarCancel = ref(false);
 
 const prefectureName = computed(() => getPrefecture(practice.value.prefectureId));
 const formatedHeldOn = computed(() => new Date(practice.value.heldOn).toLocaleDateString('ja-JP'));
@@ -69,8 +89,17 @@ const formatedCreatedAt = computed(() => new Date(practice.value.createdAt).toLo
 
 const onClickJoin = async () => {
   await practiceRepository.joinPractice(practice.value.uuid);
-  isDisplaySnackbar.value = true;
+  isDisplaySnackbarJoin.value = true;
+  practice.value = await practiceRepository.getPracticeById(uuid);
 };
+
+const onClickCancel = async () => {
+  await practiceRepository.cancelPractice(practice.value.uuid);
+  isDisplaySnackbarCancel.value = true;
+  practice.value = await practiceRepository.getPracticeById(uuid);
+};
+
+
 </script>
 
 <style scoped>

@@ -109,4 +109,18 @@ export class PracticeRepositoryImpl implements PracticeRepository {
     }
     return data.value;
   }
+
+  async cancelPractice(practiceUuid: string): Promise<void> {
+    const { data, pending, error, refresh } = await useFetchMorukuPrivateApi(`/practices/${practiceUuid}/join`, {
+      method: "DELETE",
+    });
+    if (error.value !== null) {
+      console.error(error.value);
+      throw createError({
+        statusCode: error.value.statusCode, 
+        statusMessage: "error: cancelPractice API"
+      });
+    }
+    return data.value;
+  }
 }
