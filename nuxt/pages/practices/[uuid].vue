@@ -125,6 +125,7 @@ const onClickCancel = async () => {
 
 .detail-description {
   margin: 20px 0px;
+  white-space: pre-wrap;
 }
 
 .info {
