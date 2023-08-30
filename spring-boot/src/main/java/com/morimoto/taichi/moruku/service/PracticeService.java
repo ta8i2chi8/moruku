@@ -42,7 +42,7 @@ public class PracticeService {
         return practices;
     }
 
-    public List<Practice> findAllMe(Integer limit, Integer offset) throws NoSuchIdException {
+    public List<Practice> getMyPractices(Integer limit, Integer offset) throws NoSuchIdException {
         String firebaseUid = securityConfig.getFirebaseUid();
         User user = userMapper.findByFirebaseUid(firebaseUid);
 
@@ -51,8 +51,24 @@ public class PracticeService {
             throw new NoSuchIdException("users tableにuuid " + firebaseUid + "が存在していません");
         }
         
-        System.out.println(user.getUuid().toString());
-        List<Practice> practices = practiceMapper.findAllMe(user.getUuid(), limit, offset);
+        List<Practice> practices = practiceMapper.getMyPractices(user.getUuid(), limit, offset);
+
+        if (Objects.isNull(practices)) {
+            return Collections.emptyList();
+        }
+        return practices;
+    }
+
+    public List<Practice> getMyJoinedPractices(Integer limit, Integer offset) throws NoSuchIdException {
+        String firebaseUid = securityConfig.getFirebaseUid();
+        User user = userMapper.findByFirebaseUid(firebaseUid);
+
+        // organizerIdの存在チェック
+        if (Objects.isNull(user)) {
+            throw new NoSuchIdException("users tableにuuid " + firebaseUid + "が存在していません");
+        }
+        
+        List<Practice> practices = practiceMapper.getMyJoinedPractices(user.getUuid(), limit, offset);
 
         if (Objects.isNull(practices)) {
             return Collections.emptyList();

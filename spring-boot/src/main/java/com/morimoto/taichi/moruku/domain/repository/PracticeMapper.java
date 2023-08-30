@@ -43,7 +43,29 @@ public interface PracticeMapper {
         OFFSET 
             #{offset}
     """)
-    List<Practice> findAllMe(UUID organizerId, Integer limit, Integer offset);
+    List<Practice> getMyPractices(UUID organizerId, Integer limit, Integer offset);
+
+    @Select("""
+        SELECT 
+            pr.uuid, pr.title, pr.description, pr.max_participants, pr.prefecture_id, pr.organizer_id, pr.held_on, pr.created_at 
+        FROM
+            participations as pa
+            LEFT JOIN
+                users as us
+            ON  pa.user_firebase_uid = us.firebase_uid
+            LEFT JOIN
+                practices as pr
+            ON  pa.practice_id = pr.uuid
+        WHERE
+            us.uuid = #{organizerId}
+        ORDER BY 
+            pr.created_at DESC
+        LIMIT 
+            #{limit}
+        OFFSET 
+            #{offset}
+    """)
+    List<Practice> getMyJoinedPractices(UUID organizerId, Integer limit, Integer offset);
 
     @Select("""
     <script>

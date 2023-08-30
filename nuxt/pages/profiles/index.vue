@@ -70,7 +70,7 @@ const practiceRepository = new PracticeRepositoryImpl();
 
 const me = ref(await userRepository.getMe());
 const heldPractices = ref(await practiceRepository.getMyPractices());
-const joindedPractices = ref(await practiceRepository.getPractices());
+const joindedPractices = ref(await practiceRepository.getMyJoinedPractices());
 const molkkyActivities: Ref<MolkkyActivity[]> = ref([]);
 const tabIndex = ref("held-practice");
 

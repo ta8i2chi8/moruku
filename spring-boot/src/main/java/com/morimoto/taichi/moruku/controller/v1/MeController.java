@@ -40,16 +40,43 @@ public class MeController {
                 .build();
     }
 
-    // 自分が投稿した投稿一覧を取得
+    // 自分が開催した練習会一覧を取得
     @GetMapping("/practices")
-    public List<PracticeResponse> findAllMe(
+    public List<PracticeResponse> getMyPractices(
         @RequestParam(value = "limit", required = false) Integer limit, 
         @RequestParam(value = "offset", required = false) Integer offset
     ) throws NoSuchIdException {
         if (limit == null) limit = 20;
         if (offset == null) offset = 0;
 
-        List<Practice> practices = practiceService.findAllMe(limit, offset);
+        List<Practice> practices = practiceService.getMyPractices(limit, offset);
+
+        List<PracticeResponse> responses = new ArrayList<>();
+        for (Practice practice : practices) {
+            responses.add(new PracticeResponse(
+                practice.getUuid().toString(), 
+                practice.getTitle(), 
+                practice.getDescription(), 
+                practice.getMaxParticipants(), 
+                practice.getPrefectureId(), 
+                practice.getOrganizerId().toString(), 
+                practice.getHeldOn(), 
+                practice.getCreatedAt()
+            ));
+        }
+        return responses;
+    }
+
+    // 申し込みした投稿一覧を取得
+    @GetMapping("/practices/join")
+    public List<PracticeResponse> getMyJoinedPractices(
+        @RequestParam(value = "limit", required = false) Integer limit, 
+        @RequestParam(value = "offset", required = false) Integer offset
+    ) throws NoSuchIdException {
+        if (limit == null) limit = 20;
+        if (offset == null) offset = 0;
+
+        List<Practice> practices = practiceService.getMyJoinedPractices(limit, offset);
 
         List<PracticeResponse> responses = new ArrayList<>();
         for (Practice practice : practices) {
