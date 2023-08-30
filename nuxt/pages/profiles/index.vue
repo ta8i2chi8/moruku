@@ -20,23 +20,23 @@
       </v-tabs>
       <v-window v-model="tabIndex">
         <v-window-item value="held-practice" :transition="false" :reverse-transition="false">
-          <p v-if="practices.length === 0" class="no-results">練習会がありません😭</p>
+          <p v-if="heldPractices.length === 0" class="no-results">開催した練習会がありません😭</p>
           <ul v-else class="card-list">
-            <li v-for="practice in practices" :key="practice.uuid">
+            <li v-for="practice in heldPractices" :key="practice.uuid">
               <PracticeCard :practice="practice"/>
             </li>
           </ul>
         </v-window-item>
         <v-window-item value="joined-practice" :transition="false" :reverse-transition="false">
-          <p v-if="practices.length === 0" class="no-results">練習会がありません😭</p>
+          <p v-if="joindedPractices.length === 0" class="no-results">申し込んだ練習会がありません😭</p>
           <ul v-else class="card-list">
-            <li v-for="practice in practices" :key="practice.uuid">
+            <li v-for="practice in joindedPractices" :key="practice.uuid">
               <PracticeCard :practice="practice"/>
             </li>
           </ul>
         </v-window-item>
         <v-window-item value="posted-molkky-activity" :transition="false" :reverse-transition="false">
-          <p v-if="molkkyActivities.length === 0" class="no-results">投稿がありません😭</p>
+          <p v-if="molkkyActivities.length === 0" class="no-results">自分の投稿がありません😭</p>
           <ul v-else class="card-list">
             <li v-for="molkkyActivity in molkkyActivities" :key="molkkyActivity.uuid">
               <MolkkyActivityCard :molkkyActivity="molkkyActivity"/>
@@ -44,7 +44,7 @@
           </ul>
         </v-window-item>
         <v-window-item value="liked-molkky-activity" :transition="false" :reverse-transition="false">
-          <p v-if="molkkyActivities.length === 0" class="no-results">投稿がありません😭</p>
+          <p v-if="molkkyActivities.length === 0" class="no-results">いいねした投稿がありません😭</p>
           <ul v-else class="card-list">
             <li v-for="molkkyActivity in molkkyActivities" :key="molkkyActivity.uuid">
               <MolkkyActivityCard :molkkyActivity="molkkyActivity"/>
@@ -69,23 +69,9 @@ const userRepository = new UserRepositoryImpl();
 const practiceRepository = new PracticeRepositoryImpl();
 
 const me = ref(await userRepository.getMe());
-const practices = ref(await practiceRepository.getPractices());
-const molkkyActivities = ref([
-  new MolkkyActivity(
-    "asdf",
-    "練習メニュー: 12mトレ",
-    "asdf",
-    13,
-    "2023-01-01T10:10:10",
-  ),
-  new MolkkyActivity(
-    "asdf",
-    "練習メニュー: 12mトレ",
-    "asdf",
-    13,
-    "2023-01-01T10:10:10",
-  ),
-]);
+const heldPractices = ref(await practiceRepository.getMyPractices());
+const joindedPractices = ref(await practiceRepository.getPractices());
+const molkkyActivities: Ref<MolkkyActivity[]> = ref([]);
 const tabIndex = ref("held-practice");
 
 const iconUrl = computed(() => {

@@ -23,7 +23,7 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async getMe(): Promise<User> {
-    const { data, pending, error, refresh } = await useFetchMorukuPrivateApi('/users/me');
+    const { data, pending, error, refresh } = await useFetchMorukuPrivateApi('/me/info');
     if (error.value !== null) {
       console.error(error.value);
       throw error.value;

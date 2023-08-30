@@ -39,18 +39,6 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("/me")
-    public UserResponse findMe() throws NoSuchIdException {
-        User user = userService.findMe();
-        return UserResponse.builder()
-                .uuid(user.getUuid().toString())
-                .nickname(user.getNickname())
-                .iconUrl(user.getIconUrl())
-                .email(user.getEmail())
-                .firebaseUid(user.getFirebaseUid())
-                .build();
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void insert(@RequestBody @Validated UserRequest userRequest) {
