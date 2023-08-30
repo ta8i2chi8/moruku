@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     head: {
       title: 'モルク',
       meta: [{ name: 'description', content: 'A platform that connects Molkky athletes' }],
-      link: [{ rel: 'icon', href: '/icon.jpg' }],
+      link: [{ rel: 'icon', href: '/favicon.jpg' }],
     },
   },
   build: {
