@@ -11,6 +11,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import com.morimoto.taichi.moruku.controller.v1.response.ErrorResponse;
 
+import jakarta.validation.ConstraintViolationException;
+
 import org.slf4j.Logger;
 
 @RestControllerAdvice
@@ -80,6 +82,19 @@ public class GlobalExceptionHandler {
             "RequestBodyが適切ではありません", 
             e.getMessage(), 
             "RequestBodyの形式が適切ではありません。RequestBodyを確認してください"
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse handleHttpMessageConstraintViolationException(ConstraintViolationException e) {
+        logger.info(e.getMessage(), e);
+        return new ErrorResponse(
+            HttpStatus.BAD_REQUEST.value(), 
+            "", 
+            "パラメータが適切ではありません", 
+            e.getMessage(), 
+            "パラメータのバリデーションエラーが発生しました。パラメータを確認してください"
         );
     }
 }

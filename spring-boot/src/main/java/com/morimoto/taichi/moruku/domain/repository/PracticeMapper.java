@@ -27,7 +27,7 @@ public interface PracticeMapper {
         OFFSET 
             #{offset}
     """)
-    List<Practice> findAll(Integer limit, Integer offset);
+    List<Practice> getPractices(Integer limit, Integer offset);
 
     @Select("""
         SELECT 
@@ -95,7 +95,7 @@ public interface PracticeMapper {
             #{offset}
     </script>
     """)
-    List<Practice> search(
+    List<Practice> searchPractices(
         Integer limit, 
         Integer offset, 
         Integer prefectureId, 
@@ -112,7 +112,7 @@ public interface PracticeMapper {
         WHERE 
             uuid = #{uuid}
     """)    
-    Practice findById(UUID uuid);
+    Practice getPracticeById(UUID uuid);
 
     @Insert("""
         INSERT INTO 
@@ -121,7 +121,7 @@ public interface PracticeMapper {
             (#{title}, #{description}, #{maxParticipants}, #{prefectureId}, #{organizerId}, #{heldOn})
     """)
     @Options(useGeneratedKeys = true, keyColumn = "uuid", keyProperty = "uuid")
-    void insert(Practice practice);
+    void insertPractice(Practice practice);
 
     @Update("""
         UPDATE 
@@ -134,7 +134,7 @@ public interface PracticeMapper {
             held_on = #{heldOn}
         WHERE uuid = #{uuid}
     """)
-    int update(Practice practice);
+    int updatePractice(Practice practice);
 
     @Delete("""
         DELETE FROM 
@@ -142,7 +142,7 @@ public interface PracticeMapper {
         WHERE 
             uuid = #{uuid}
     """)
-    int delete(UUID uuid);
+    int deletePractice(UUID uuid);
 
     @Insert("""
         INSERT INTO 

@@ -27,11 +27,12 @@ import com.morimoto.taichi.moruku.exception.NoSuchIdException;
 import com.morimoto.taichi.moruku.exception.NotMyEntityException;
 import com.morimoto.taichi.moruku.service.PracticeService;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 
 
+@Validated
 @RestController
 @RequestMapping("/api/v1/practices")
 public class PracticeController {
@@ -40,14 +41,14 @@ public class PracticeController {
     private PracticeService practiceService;
 
     @GetMapping
-    public List<PracticeResponse> findAll(
+    public List<PracticeResponse> getPractices(
         @RequestParam(value = "limit", required = false) Integer limit, 
         @RequestParam(value = "offset", required = false) Integer offset
     ) {
         if (limit == null) limit = 20;
         if (offset == null) offset = 0;
 
-        List<Practice> practices = practiceService.findAll(limit, offset);
+        List<Practice> practices = practiceService.getPractices(limit, offset);
 
         List<PracticeResponse> responses = new ArrayList<>();
         for (Practice practice : practices) {
@@ -66,10 +67,10 @@ public class PracticeController {
     }
 
     @GetMapping("/search")
-    public List<PracticeResponse> search(
+    public List<PracticeResponse> searchPractices(
         @RequestParam(value = "limit", required = false) Integer limit, 
         @RequestParam(value = "offset", required = false) Integer offset,
-        @Min(1) @Max(47) @Valid @RequestParam(value = "prefectureId", required = false) Integer prefectureId,
+        @RequestParam(value = "prefectureId", required = false) @Min(1) @Max(47) Integer prefectureId,
         @RequestParam(value = "from", required = false) LocalDate from,
         @RequestParam(value = "to", required = false) LocalDate to,
         @RequestParam(value = "keyword", required = false) String keyword
@@ -77,7 +78,7 @@ public class PracticeController {
         if (limit == null) limit = 20;
         if (offset == null) offset = 0;
 
-        List<Practice> practices = practiceService.search(
+        List<Practice> practices = practiceService.searchPractices(
             limit, 
             offset, 
             prefectureId,
@@ -103,8 +104,8 @@ public class PracticeController {
     }
 
     @GetMapping("/{uuid}")
-    public PracticeDetailResponse findById(@PathVariable String uuid) throws NoSuchIdException {
-        Practice practice = practiceService.findById(UUID.fromString(uuid));
+    public PracticeDetailResponse getPracticeById(@PathVariable @Size(min=36, max=36) String uuid) throws NoSuchIdException {
+        Practice practice = practiceService.getPracticeById(UUID.fromString(uuid));
         return PracticeDetailResponse.builder()
                 .uuid(practice.getUuid().toString())
                 .title(practice.getTitle())
@@ -120,7 +121,7 @@ public class PracticeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void insert(@RequestBody @Validated PracticeRequest practiceRequest) throws NoSuchIdException {
+    public void insertPractice(@RequestBody @Validated PracticeRequest practiceRequest) throws NoSuchIdException {
         Practice newPractice = new Practice();
         newPractice.setTitle(practiceRequest.getTitle());
         newPractice.setDescription(practiceRequest.getDescription());
@@ -128,11 +129,14 @@ public class PracticeController {
         newPractice.setPrefectureId(practiceRequest.getPrefectureId());
         newPractice.setHeldOn(practiceRequest.getHeldOn());
 
-        practiceService.insert(newPractice);
+        practiceService.insertPractice(newPractice);
     }
     
     @PutMapping("/{uuid}")
-    public void update(@PathVariable String uuid, @RequestBody @Validated PracticeRequest practiceRequest) throws NoSuchIdException, NotMyEntityException {
+    public void updatePractice(
+        @PathVariable @Size(min=36, max=36) String uuid, 
+        @RequestBody @Validated PracticeRequest practiceRequest
+    ) throws NoSuchIdException, NotMyEntityException {
         Practice newPractice = new Practice();
         newPractice.setUuid(UUID.fromString(uuid));
         newPractice.setTitle(practiceRequest.getTitle());
@@ -141,22 +145,22 @@ public class PracticeController {
         newPractice.setPrefectureId(practiceRequest.getPrefectureId());
         newPractice.setHeldOn(practiceRequest.getHeldOn());
         
-        practiceService.update(newPractice);
+        practiceService.updatePractice(newPractice);
     }
     
     @DeleteMapping("/{uuid}")
-    public void delete(@PathVariable String uuid) throws NoSuchIdException {
-        practiceService.delete(UUID.fromString(uuid));
+    public void deletePractice(@PathVariable @Size(min=36, max=36) String uuid) throws NoSuchIdException {
+        practiceService.deletePractice(UUID.fromString(uuid));
     }
 
     @PostMapping("/{uuid}/join")
     @ResponseStatus(HttpStatus.CREATED)
-    public void joinPractice(@PathVariable String uuid) throws NoSuchIdException {
+    public void joinPractice(@PathVariable @Size(min=36, max=36) String uuid) throws NoSuchIdException {
         practiceService.joinPractice(UUID.fromString(uuid));
     }
     
     @DeleteMapping("/{uuid}/join")
-    public void cancelPractice(@PathVariable String uuid) throws NoSuchIdException {
+    public void cancelPractice(@PathVariable @Size(min=36, max=36) String uuid) throws NoSuchIdException {
         practiceService.cancelPractice(UUID.fromString(uuid));
     }
 }
