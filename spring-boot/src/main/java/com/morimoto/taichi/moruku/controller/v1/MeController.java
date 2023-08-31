@@ -29,8 +29,8 @@ public class MeController {
 
     // 自身のアカウント情報を取得
     @GetMapping("/info")
-    public UserResponse findMe() throws NoSuchIdException {
-        User user = userService.findMe();
+    public UserResponse getMeInfUserResponse() throws NoSuchIdException {
+        User user = userService.getMe();
         return UserResponse.builder()
                 .uuid(user.getUuid().toString())
                 .nickname(user.getNickname())

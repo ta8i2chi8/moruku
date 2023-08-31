@@ -19,7 +19,9 @@ import com.morimoto.taichi.moruku.domain.entity.User;
 import com.morimoto.taichi.moruku.exception.NoSuchIdException;
 import com.morimoto.taichi.moruku.service.UserService;
 
+import jakarta.validation.constraints.Size;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
@@ -28,8 +30,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{uuid}")
-    public UserResponse findById(@PathVariable String uuid) throws NoSuchIdException {
-        User user = userService.findById(UUID.fromString(uuid));
+    public UserResponse getUserById(@PathVariable @Size(min=36, max=36) String uuid) throws NoSuchIdException {
+        User user = userService.getUserById(UUID.fromString(uuid));
         return UserResponse.builder()
                 .uuid(user.getUuid().toString())
                 .nickname(user.getNickname())
@@ -41,11 +43,11 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void insert(@RequestBody @Validated UserRequest userRequest) {
+    public void insertUser(@RequestBody @Validated UserRequest userRequest) {
         User newUser = new User();
         newUser.setNickname(userRequest.getNickname());
         newUser.setEmail(userRequest.getEmail());
         newUser.setFirebaseUid(userRequest.getFirebaseUid());
-        userService.insert(newUser);
+        userService.insertUser(newUser);
     }
 }

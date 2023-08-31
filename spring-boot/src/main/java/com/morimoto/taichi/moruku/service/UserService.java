@@ -20,8 +20,8 @@ public class UserService {
     @Autowired
     private SecurityConfig securityConfig;
 
-    public User findById(UUID uuid) throws NoSuchIdException {
-        User user = userMapper.findByUuid(uuid);
+    public User getUserById(UUID uuid) throws NoSuchIdException {
+        User user = userMapper.getUserByUuid(uuid);
 
         if (Objects.isNull(user)) {
             throw new NoSuchIdException("users tableにuuid " + uuid + "が存在していません");
@@ -29,9 +29,9 @@ public class UserService {
         return user;
     }
 
-    public User findMe() throws NoSuchIdException {
+    public User getMe() throws NoSuchIdException {
         String firebaseUid = securityConfig.getFirebaseUid();
-        User user = userMapper.findByFirebaseUid(firebaseUid);
+        User user = userMapper.getUserByFirebaseUid(firebaseUid);
 
         if (Objects.isNull(user)) {
             throw new NoSuchIdException("users tableにfirebase_uid " + firebaseUid + "が存在していません");
@@ -39,7 +39,7 @@ public class UserService {
         return user;
     }
 
-    public void insert(User user) {
-        userMapper.insert(user);
+    public void insertUser(User user) {
+        userMapper.insertUser(user);
     }
 }

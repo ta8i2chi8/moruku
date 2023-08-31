@@ -19,7 +19,7 @@ public interface ParticipantionMapper {
                 AND
             user_firebase_uid = #{firebaseUid}
     """)
-    int findByIds(UUID practiceId, String firebaseUid);
+    int getParticipantionByIds(UUID practiceId, String firebaseUid);
 
     @Insert("""
         INSERT INTO 
@@ -27,7 +27,7 @@ public interface ParticipantionMapper {
         VALUES 
             (#{practiceId}, #{firebaseUid})
     """)
-    void insert(UUID practiceId, String firebaseUid);
+    void insertParticipantion(UUID practiceId, String firebaseUid);
     
     @Delete("""
         DELETE FROM 
@@ -38,5 +38,5 @@ public interface ParticipantionMapper {
             user_firebase_uid = #{firebaseUid}
 
     """)
-    int delete(UUID practiceId, String firebaseUid);
+    int deleteParticipantion(UUID practiceId, String firebaseUid);
 }

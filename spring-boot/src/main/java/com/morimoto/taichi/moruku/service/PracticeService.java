@@ -33,8 +33,8 @@ public class PracticeService {
     @Autowired
     private UserMapper userMapper;
 
-    public List<Practice> findAll(Integer limit, Integer offset) {
-        List<Practice> practices = practiceMapper.findAll(limit, offset);
+    public List<Practice> getPractices(Integer limit, Integer offset) {
+        List<Practice> practices = practiceMapper.getPractices(limit, offset);
 
         if (Objects.isNull(practices)) {
             return Collections.emptyList();
@@ -44,7 +44,7 @@ public class PracticeService {
 
     public List<Practice> getMyPractices(Integer limit, Integer offset) throws NoSuchIdException {
         String firebaseUid = securityConfig.getFirebaseUid();
-        User user = userMapper.findByFirebaseUid(firebaseUid);
+        User user = userMapper.getUserByFirebaseUid(firebaseUid);
 
         // organizerIdの存在チェック
         if (Objects.isNull(user)) {
@@ -61,7 +61,7 @@ public class PracticeService {
 
     public List<Practice> getMyJoinedPractices(Integer limit, Integer offset) throws NoSuchIdException {
         String firebaseUid = securityConfig.getFirebaseUid();
-        User user = userMapper.findByFirebaseUid(firebaseUid);
+        User user = userMapper.getUserByFirebaseUid(firebaseUid);
 
         // organizerIdの存在チェック
         if (Objects.isNull(user)) {
@@ -76,7 +76,7 @@ public class PracticeService {
         return practices;
     }
 
-    public List<Practice> search(
+    public List<Practice> searchPractices(
         Integer limit, 
         Integer offset, 
         Integer prefectureId, 
@@ -84,7 +84,7 @@ public class PracticeService {
         LocalDate to,
         String keyword
     ) {
-        List<Practice> practices = practiceMapper.search(
+        List<Practice> practices = practiceMapper.searchPractices(
             limit, 
             offset, 
             prefectureId,
@@ -99,8 +99,8 @@ public class PracticeService {
         return practices;
     }
 
-    public Practice findById(UUID uuid) throws NoSuchIdException {
-        Practice practice = practiceMapper.findById(uuid);
+    public Practice getPracticeById(UUID uuid) throws NoSuchIdException {
+        Practice practice = practiceMapper.getPracticeById(uuid);
         
         if (Objects.isNull(practice)) {
             throw new NoSuchIdException("practices tableにuuid " + uuid + "が存在していません");
@@ -108,9 +108,8 @@ public class PracticeService {
 
         String firebaseUid = securityConfig.getFirebaseUid();
 
-        int findedParticipantionCount = participantionMapper.findByIds(uuid, firebaseUid);
-        System.out.println(firebaseUid);
-        System.out.println(findedParticipantionCount);
+        int findedParticipantionCount = participantionMapper.getParticipantionByIds(uuid, firebaseUid);
+
         if (findedParticipantionCount == 1) {
             practice.setIsJoined(true);
         } else {
@@ -119,9 +118,9 @@ public class PracticeService {
         return practice;
     }
 
-    public void insert(Practice practice) throws NoSuchIdException {
+    public void insertPractice(Practice practice) throws NoSuchIdException {
         String firebaseUid = securityConfig.getFirebaseUid();
-        User user = userMapper.findByFirebaseUid(firebaseUid);
+        User user = userMapper.getUserByFirebaseUid(firebaseUid);
 
         // organizerIdの存在チェック
         if (Objects.isNull(user)) {
@@ -129,29 +128,29 @@ public class PracticeService {
         }
 
         practice.setOrganizerId(user.getUuid());
-        practiceMapper.insert(practice);
+        practiceMapper.insertPractice(practice);
     }
 
-    public void update(Practice practice) throws NoSuchIdException, NotMyEntityException {
+    public void updatePractice(Practice practice) throws NoSuchIdException, NotMyEntityException {
         String firebaseUid = securityConfig.getFirebaseUid();
-        User user = userMapper.findByFirebaseUid(firebaseUid);
+        User user = userMapper.getUserByFirebaseUid(firebaseUid);
 
         // 自分で開催した練習会かどうかをチェック
-        Practice currentPractice = practiceMapper.findById(practice.getUuid());
+        Practice currentPractice = practiceMapper.getPracticeById(practice.getUuid());
         UUID organizerId = currentPractice.getOrganizerId();
         if (!(organizerId.equals(user.getUuid()))) {
             throw new NotMyEntityException("ユーザーのUUID(" + user.getUuid().toString() + ")が、練習会の開催者のUUID(" + organizerId + ")と一致しません");
         }
 
-        int updatedCount = practiceMapper.update(practice);
+        int updatedCount = practiceMapper.updatePractice(practice);
 
         if (updatedCount == 0) {
             throw new NoSuchIdException("practices tableにuuid " + practice.getUuid().toString() + "が存在していません");
         }
     }
 
-    public void delete(UUID uuid) throws NoSuchIdException {
-        int deletedCount = practiceMapper.delete(uuid);
+    public void deletePractice(UUID uuid) throws NoSuchIdException {
+        int deletedCount = practiceMapper.deletePractice(uuid);
 
         if (deletedCount == 0) {
             throw new NoSuchIdException("practices tableにuuid " + uuid + "が存在していません");
@@ -160,7 +159,7 @@ public class PracticeService {
 
     public void joinPractice(UUID practiceId) throws NoSuchIdException {
         // practiceIdの存在チェック
-        Practice practice = practiceMapper.findById(practiceId);        
+        Practice practice = practiceMapper.getPracticeById(practiceId);        
         if (Objects.isNull(practice)) {
             throw new NoSuchIdException("practices tableにuuid " + practiceId + "が存在していません");
         }
@@ -168,17 +167,17 @@ public class PracticeService {
         String firebaseUid = securityConfig.getFirebaseUid();
 
         // firebaseUidの存在チェック
-        User user = userMapper.findByFirebaseUid(firebaseUid);        
+        User user = userMapper.getUserByFirebaseUid(firebaseUid);        
         if (Objects.isNull(user)) {
             throw new NoSuchIdException("users tableにfirebase_uid " + firebaseUid + "が存在していません");
         }
 
-        participantionMapper.insert(practiceId, firebaseUid);
+        participantionMapper.insertParticipantion(practiceId, firebaseUid);
     }
 
     public void cancelPractice(UUID practiceId) throws NoSuchIdException {
         // practiceIdの存在チェック
-        Practice practice = practiceMapper.findById(practiceId);        
+        Practice practice = practiceMapper.getPracticeById(practiceId);        
         if (Objects.isNull(practice)) {
             throw new NoSuchIdException("practices tableにuuid " + practiceId + "が存在していません");
         }
@@ -186,12 +185,12 @@ public class PracticeService {
         String firebaseUid = securityConfig.getFirebaseUid();
 
         // firebaseUidの存在チェック
-        User user = userMapper.findByFirebaseUid(firebaseUid);        
+        User user = userMapper.getUserByFirebaseUid(firebaseUid);        
         if (Objects.isNull(user)) {
             throw new NoSuchIdException("users tableにfirebase_uid " + firebaseUid + "が存在していません");
         }
 
-        int deletedCount = participantionMapper.delete(practiceId, firebaseUid);
+        int deletedCount = participantionMapper.deleteParticipantion(practiceId, firebaseUid);
         if (deletedCount == 0) {
             throw new NoSuchIdException("participations tableにpractice_id: " + practiceId.toString() + ", user_firebase_uid: " + firebaseUid + "のレコードが存在しません");
         }
